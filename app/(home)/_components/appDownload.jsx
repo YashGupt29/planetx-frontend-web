@@ -1,10 +1,9 @@
-
-import Image from "next/image"
+import Image from "next/image";
 
 export const AppDownloadSection = () => {
   return (
     <section className="flex justify-center w-full px-4 md:px-[100px] pt-[120px]">
-      <div className="relative w-full max-w-[1240px] min-h-[427px] bg-gradient-to-r from-[#B97AFD] to-[#CAA9EE] rounded-[20px] overflow-hidden">
+      <div className="relative w-full max-w-[1240px] min-h-[427px] bg-gradient-to-r from-[#B97AFD] to-[#CAA9EE] rounded-[20px]">
         {/* Content Section */}
         <div className="flex flex-col justify-center p-6 md:p-20 md:pr-[600px] gap-[30px] w-full">
           <div className="flex flex-col gap-[5px]">
@@ -17,7 +16,8 @@ export const AppDownloadSection = () => {
           </div>
 
           <p className="font-poppins font-medium text-xl leading-8 text-white max-w-[560px]">
-            Explore properties, connect with owners, and manage your listings effortlessly anytime, anywhere.
+            Explore properties, connect with owners, and manage your listings
+            effortlessly anytime, anywhere.
           </p>
 
           {/* App Store Buttons */}
@@ -50,27 +50,26 @@ export const AppDownloadSection = () => {
             </a>
           </div>
         </div>
-
         {/* Phone Mockups */}
-        <div className="hidden md:block absolute right-0 -top-[120px]">
-          <div className="relative">
+        <div>
+          <div>
             {/* Back Phone */}
-            <div className="absolute right-[184px] top-[52px] z-10">
+            <div className="absolute right-[285px] top-[-68px] z-10">
               <Image
                 src="/mobile-app-left.png"
                 alt="Planet X App Interface Preview"
-                width={294}
+                width={295}
                 height={495}
                 className="shadow-[25px_8px_11.5px_-13px_rgba(1,1,1,0.19)]"
                 priority
               />
             </div>
             {/* Front Phone */}
-            <div className="absolute right-0 top-0">
+            <div className="absolute right-[100px] top-[-120px]">
               <Image
                 src="/mobile-app-right.png"
                 alt="Planet X App Interface Preview"
-                width={294}
+                width={301}
                 height={547}
                 priority
               />
@@ -79,7 +78,5 @@ export const AppDownloadSection = () => {
         </div>
       </div>
     </section>
-  )
-}
-
-
+  );
+};
