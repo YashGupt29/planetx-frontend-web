@@ -5,7 +5,9 @@ import { ExploreProperty } from "./_components/explorePropertyPage";
 import { PropertyGuide } from "./_components/propertyGuide";
 import { PropertyUpload } from "./_components/propertyUpload";
 import { FAQSection } from "./_components/faq";
-// import { AppDownloadSection } from "./_components/appDownload";
+import { AppDownloadSection } from "./_components/appDownload";
+import { Testimonials } from "./_components/testimonial";
+import { Footer } from "./_components/footer";
 
 export default function Home() {
   return (
@@ -17,7 +19,9 @@ export default function Home() {
       <PropertyGuide />
       <PropertyUpload />
       <FAQSection />
-      {/* <AppDownloadSection /> */}
+      <AppDownloadSection />
+      <Testimonials />
+      <Footer />
     </div >
   );
 }
