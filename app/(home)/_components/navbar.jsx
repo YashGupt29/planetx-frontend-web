@@ -14,7 +14,7 @@ import { CgProfile } from "react-icons/cg";
 
 export const Navbar = () => {
   return (
-    <div className="bg-white">
+    <div className="w-full shadow-sm">
       <div className="py-3 px-8 flex justify-between">
         <div className="flex gap-2 items-center justify-center">
           <Image src={logo} width={40} height={40} alt="logo of planet-x" />

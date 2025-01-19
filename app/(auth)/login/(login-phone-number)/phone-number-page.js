@@ -14,40 +14,41 @@ export const EnterPhoneNumber = ({ mobileNumber, setMobileNumber, setPhoneNumber
   const [successMessage, setSuccessMessage] = useState('')
 
   const handleSendOTP = async () => {
-    setPhoneNumberSubmitted(true);
-    setErrorMessage('')
-    setSuccessMessage('')
+    setErrorMessage('');
+    setSuccessMessage('');
 
     // Basic validation for mobile number
-    if (!mobileNumber || mobileNumber.length !== 10) {
-      setErrorMessage('Please enter a valid 10-digit mobile number.')
-      return
+    if (!mobileNumber || !/^\d{10}$/.test(mobileNumber)) {
+      setErrorMessage('Please enter a valid 10-digit mobile number.');
+      return;
     }
 
     try {
+      console.log(mobileNumber);
       const response = await fetch(`${BACKEND_URL}/auth/send-otp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          mobile: `+ 91${mobileNumber}`,
+          mobile: `+91${mobileNumber}`,
         }),
-      })
+      });
 
-      const data = await response.json()
+      const data = await response.json();
+      console.log(data);
 
       if (response.ok) {
-        setSuccessMessage('OTP sent successfully.')
-        setPhoneNumberSubmitted(true) // Notify parent of submission
+        setSuccessMessage('OTP sent successfully.');
+        setPhoneNumberSubmitted(true); // Notify parent of submission
       } else {
         // Handle error responses
-        setErrorMessage(data.message || 'Failed to send OTP.')
+        setErrorMessage(data.message || 'Failed to send OTP.');
       }
     } catch (error) {
-      setErrorMessage('Something went wrong. Please try again.')
+      setErrorMessage('Something went wrong. Please try again.');
     }
-  }
+  };
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center px-4">
@@ -108,7 +109,9 @@ export const EnterPhoneNumber = ({ mobileNumber, setMobileNumber, setPhoneNumber
         {/* Send OTP Button */}
         <Button
           onClick={handleSendOTP}
-          className="w-full h-[50px] bg-[#7B00FF] hover:bg-[#7B00FF]/90 rounded-[10px] text-base font-medium"
+          disabled={!/^\d{10}$/.test(mobileNumber)}
+          className={`w-full h-[50px] ${/^\d{10}$/.test(mobileNumber) ? 'bg-[#7B00FF] hover:bg-[#7B00FF]/90' : 'bg-gray-300'
+            } rounded-[10px] text-base font-medium`}
         >
           Send OTP
         </Button>
