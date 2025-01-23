@@ -56,13 +56,15 @@ export const OTPVerification = ({ mobileNumber }) => {
     setError('')
 
     try {
+      console.log(enteredOtp, mobileNumber);
       const response = await fetch(`${BACKEND_URL}/auth/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mobile: mobileNumber, otp: enteredOtp }),
+        body: JSON.stringify({ mobile: '+91' + mobileNumber, otp: enteredOtp }),
       })
 
       const data = await response.json()
+      console.log(data);
 
       if (!response.ok) {
         throw new Error(data.message || 'Verification failed')
@@ -92,6 +94,7 @@ export const OTPVerification = ({ mobileNumber }) => {
       })
 
       const data = await response.json()
+      console.log(data);
 
       if (!response.ok) {
         throw new Error(data.message || 'Failed to resend OTP')
@@ -133,15 +136,15 @@ export const OTPVerification = ({ mobileNumber }) => {
             {otp.map((digit, index) => (
               <input
                 key={index}
-                id={`otp - ${index}`}
+                id={`otp-${index}`}
                 type="text"
                 inputMode="numeric"
                 value={digit}
                 onChange={(e) => handleOtpChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
-                className={`w - [58px] h - [58px] bg - [#F5F5F5] rounded - lg text - center text - [22px] font - medium
+                className={`w-[58px] h-[58px] bg-[#F5F5F5] rounded-lg text-center text-[22px] font-medium
                   ${digit ? 'border border-[#7B00FF] text-[#7B00FF]' : 'border border-[#E1E1E1]'}
-                  focus: outline - none focus: border - [#7B00FF] focus: ring - 1 focus: ring - [#7B00FF]`}
+                  focus:outline-none focus:border-[#7B00FF] focus:ring-1 focus:ring-[#7B00FF]`}
                 maxLength={1}
                 aria-label={`Digit ${index + 1} of OTP`}
               />
