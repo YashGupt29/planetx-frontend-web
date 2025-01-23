@@ -36,7 +36,6 @@ export const EnterPhoneNumber = ({ mobileNumber, setMobileNumber, setPhoneNumber
       });
 
       const data = await response.json();
-      console.log(data);
 
       if (response.ok) {
         setSuccessMessage('OTP sent successfully.');
@@ -53,18 +52,9 @@ export const EnterPhoneNumber = ({ mobileNumber, setMobileNumber, setPhoneNumber
   return (
     <div className="flex-1 flex flex-col items-center justify-center px-4">
       {/* Logo */}
-      <div className="mb-16">
-        <Image
-          src="/logo.png"
-          alt="Logo"
-          width={120}
-          height={120}
-          className="w-auto h-auto"
-        />
-      </div>
 
       {/* Login Container */}
-      <div className="w-full max-w-[450px] flex flex-col gap-5">
+      <div className="max-w-[450px] flex flex-col gap-5">
         {/* Header */}
         <div className="text-center space-y-1">
           <h1 className="text-[28px] font-semibold leading-[44px] text-[#0F0D0D]">
@@ -83,7 +73,7 @@ export const EnterPhoneNumber = ({ mobileNumber, setMobileNumber, setPhoneNumber
           <div className="flex items-center bg-white border border-[#E1E1E1] rounded-lg h-[58px] px-4">
             <div className="flex items-center gap-1 pr-4 border-r border-[#9E9E9E]">
               <Image
-                src="/placeholder.svg?height=16&width=24"
+                src="/flag.png"
                 alt="India flag"
                 width={24}
                 height={16}
@@ -110,7 +100,7 @@ export const EnterPhoneNumber = ({ mobileNumber, setMobileNumber, setPhoneNumber
         <Button
           onClick={handleSendOTP}
           disabled={!/^\d{10}$/.test(mobileNumber)}
-          className={`w-full h-[50px] ${/^\d{10}$/.test(mobileNumber) ? 'bg-[#7B00FF] hover:bg-[#7B00FF]/90' : 'bg-gray-300'
+          className={`max-w-[450px] h-[50px] ${/^\d{10}$/.test(mobileNumber) ? 'bg-[#7B00FF] hover:bg-[#7B00FF]/90' : 'bg-gray-300'
             } rounded-[10px] text-base font-medium`}
         >
           Send OTP
