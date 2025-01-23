@@ -9,9 +9,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button"
 import { CgProfile } from "react-icons/cg"
 import { Bell, ChevronDown } from "lucide-react"
+import { useRouter } from "next/navigation";
+
 
 export const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -19,7 +22,7 @@ export const Navbar = () => {
   }, [])
 
   return (
-    <div className="w-full border-b border-[#E1E1E1] shadow-[0px_6px_10.2px_rgba(0,0,0,0.05)]">
+    <div className="w-full border-b border-[#E1E1E1] shadow-lg bg-white">
       <div className="py-[15px] px-[30px] flex justify-between items-center max-w-[1440px] mx-auto">
         <div className="flex gap-2 items-center justify-center">
           <Image src={logo || "/placeholder.svg"} width={40} height={40} alt="logo of planet-x" />
@@ -63,7 +66,7 @@ export const Navbar = () => {
               </div>
             </>
           ) : (
-            <Button className="bg-gray-100 flex items-center justify-center gap-2">
+            <Button onClick={() => router.push('/login')} className="bg-gray-100 flex items-center justify-center gap-2">
               <CgProfile color="#7B00FF" className="text-[20px]" />
               <p className="text-black text-[15px]">Login</p>
             </Button>

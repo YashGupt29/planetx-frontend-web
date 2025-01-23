@@ -5,7 +5,7 @@ import { EnterPhoneNumber } from './(login-phone-number)/phone-number-page'
 import { OTPVerification } from './(login-otp)/otp-page'
 
 export default function Login() {
-  const [phoneNumberSubmitted, setPhoneNumberSubmitted] = useState(true)
+  const [phoneNumberSubmitted, setPhoneNumberSubmitted] = useState(false)
   const [mobileNumber, setMobileNumber] = useState('');
 
   return (
