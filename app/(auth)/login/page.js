@@ -1,46 +1,45 @@
-
 'use client'
-
 import Image from 'next/image'
 import { useState } from 'react';
 import { EnterPhoneNumber } from './(login-phone-number)/phone-number-page'
 import { OTPVerification } from './(login-otp)/otp-page'
 
-
-
 export default function Login() {
   const [phoneNumberSubmitted, setPhoneNumberSubmitted] = useState(false)
-  const [mobileNumber, setMobileNumber] = useState(0);
+  const [mobileNumber, setMobileNumber] = useState('');
 
   return (
     <div className='max-h-screen'>
-      {/* <div className="flex items-center gap-2 top-1"> */}
-      {/*   <Image */}
-      {/*     src="/logo.png" */}
-      {/*     alt="Planet X Logo" */}
-      {/*     width={24} */}
-      {/*     height={24} */}
-      {/*     className="w-auto h-auto" */}
-      {/*   /> */}
-      {/*   <span className="text-lg font-semibold">PLANET X</span> */}
-      {/* </div> */}
+      <div className="absolute flex top-4 left-4">
+        <Image
+          src="/logo.png"
+          alt="Logo"
+          width={100}
+        height={100}
+        className="w-auto h-auto"
+        />
+        <div className='font-extrabold pt-3 pl-2 font-poppins text-2xl'>
+          PLANET X
+        </div>
+      </div>
+
       <div className="w-full flex">
         {/* Left Panel */}
-        <div className="w-1/2  flex flex-col items-center justify-center px-4">
-          {/* Logo */}
 
-          {
-            phoneNumberSubmitted
-              ? <OTPVerification mobileNumber={mobileNumber} />
-              : <EnterPhoneNumber
-                mobileNumber={mobileNumber}
-                setMobileNumber={setMobileNumber}
-                phoneNumberSubmitted={phoneNumberSubmitted}
-                setPhoneNumberSubmitted={setPhoneNumberSubmitted}
-              />
-          }
+        <div className="w-1/2 flex items-center justify-center">
+          <div className={`max-w-[450px] ${phoneNumberSubmitted ? "h-[666px]" : "h-[257px]"}`}>
+            {
+              phoneNumberSubmitted
+                ? <OTPVerification mobileNumber={mobileNumber} />
+                : <EnterPhoneNumber
+                  mobileNumber={mobileNumber}
+                  setMobileNumber={setMobileNumber}
+                  phoneNumberSubmitted={phoneNumberSubmitted}
+                  setPhoneNumberSubmitted={setPhoneNumberSubmitted}
+                />
+            }
+          </div>
         </div>
-
         {/* Right Panel */}
         <div className="hidden lg:block w-1/2 relative">
           <Image
@@ -64,11 +63,7 @@ export default function Login() {
             </div>
           </div>
         </div>
-      </div >
-    </div>
+      </div>
+    </div >
   )
 }
-
-
-
-

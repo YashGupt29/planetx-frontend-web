@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 
 export function StepsSection({ steps, currentStep }) {
   return (
-    <div className="box-border flex flex-col items-start p-5 gap-10 w-full md:w-64 bg-white border border-[#E1E1E1] rounded-xl">
+    <div className="box-border flex flex-col items-start p-5 gap-10 w-full md:w-64 bg-white border border-[#E1E1E1] rounded-xl max-h-[375px] max-w-[265px]">
       {steps.map((step, index) => (
         <div key={step.number} className="flex flex-row items-center gap-3.5 w-full">
           <div

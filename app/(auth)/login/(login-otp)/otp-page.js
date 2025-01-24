@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import BACKEND_URL from '@/lib/BACKEND_URL'
 import useLocalStorage from '@/hooks/localStorage'
+import { useRouter } from 'next/navigation'
 
 export const OTPVerification = ({ mobileNumber }) => {
   const [otp, setOtp] = useState(['', '', '', ''])
@@ -14,6 +15,7 @@ export const OTPVerification = ({ mobileNumber }) => {
   const [value, setValue] = useLocalStorage('token', "");
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const router = useRouter();
 
   useEffect(() => {
     if (timeLeft > 0) {
@@ -70,9 +72,10 @@ export const OTPVerification = ({ mobileNumber }) => {
         throw new Error(data.message || 'Verification failed')
       }
 
-      console.log('Login successful:', data.token)
+      console.log('Login successful:', data)
       //TODO: handle login successful
-      setValue(data.token);
+      setValue(data.accesstoken);
+      router.push('/');
 
     } catch (err) {
       setError(err.message || 'An error occurred while verifying OTP')
@@ -90,7 +93,7 @@ export const OTPVerification = ({ mobileNumber }) => {
       const response = await fetch(`${BACKEND_URL}/auth/send-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mobile: mobileNumber }),
+        body: JSON.stringify({ mobile: '+91' + mobileNumber }),
       })
 
       const data = await response.json()
@@ -107,20 +110,20 @@ export const OTPVerification = ({ mobileNumber }) => {
   }
 
   return (
-    <div className="h-full flex flex-col items-center justify-center px-4 pb-16">
-      <div className="w-full max-w-[450px] flex flex-col items-center gap-6">
+    <div className="flex flex-col items-center justify-center px-4">
+      <div className="max-w-[450px] flex flex-col items-center gap-6">
         {/* Illustration */}
-        <div className="w-[200px] h-[200px] relative mb-4">
+        <div className="relative mt-16 pt-6">
           <Image
-            src="/placeholder.svg?height=200&width=200"
+            src="/otp-page-image.png"
             alt="OTP Verification Illustration"
-            width={200}
-            height={200}
+            width={150}
+            height={150}
             className="mx-auto"
           />
         </div>
 
-        <div className="w-full space-y-4 flex-grow flex flex-col justify-between">
+        <div className="space-y-4 flex-grow flex flex-col justify-between">
           {/* Header */}
           <div className="text-center space-y-1">
             <h1 className="text-[28px] font-semibold leading-[44px] text-[#0F0D0D]">
@@ -158,7 +161,7 @@ export const OTPVerification = ({ mobileNumber }) => {
           <Button
             onClick={verifyOTP}
             disabled={loading}
-            className="w-full h-[50px] bg-[#7B00FF] hover:bg-[#7B00FF]/90 rounded-[10px] text-base font-medium"
+            className="w-[450px] h-[50px] bg-[#7B00FF] hover:bg-[#7B00FF]/90 rounded-[10px] text-base font-medium"
           >
             {loading ? 'Verifying...' : 'Verify OTP'}
           </Button>
@@ -184,7 +187,7 @@ export const OTPVerification = ({ mobileNumber }) => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   )
 }
 
