@@ -1,5 +1,5 @@
 
-import { AppSidebar } from "./addproperty/_components/sideBar";
+import { AppSidebar } from "./add-property/_components/sideBar";
 import { Navbar } from "../(home)/_components/navbar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 
