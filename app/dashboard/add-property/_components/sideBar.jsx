@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation"
 import { LayoutDashboard, Heart, User, MessageSquare, ClipboardList } from "lucide-react"
 
 
-export function Sidebar() {
+export const AppSidebar = () => {
   const pathname = usePathname()
 
   const sidebarItems= [
@@ -43,7 +43,7 @@ export function Sidebar() {
   ]
 
   return (
-    <aside className="w-[280px] bg-white flex flex-col">
+    <aside className="w-[280px] bg-white flex flex-col border-r max-h-full">
       <nav className="flex flex-col p-5 pt-5 gap-[15px]">
         {sidebarItems.map((item) => {
           const isActive = pathname === item.href
