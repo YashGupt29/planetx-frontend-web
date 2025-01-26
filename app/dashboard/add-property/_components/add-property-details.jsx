@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState } from "react"
@@ -14,6 +15,9 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { formSchema } from "../schema"
 import { useToast } from "@/hooks/use-toast"
 import axios from "axios"
+import BACKEND_URL from "@/lib/BACKEND_URL"
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export const PropertyDetailsForm = () => {
   const [openFurnishingDialog, setOpenFurnishingDialog] = useState(false)
@@ -43,15 +47,17 @@ export const PropertyDetailsForm = () => {
   })
 
   async function onSubmit(values) {
+    console.log(values)
     setIsSubmitting(true)
 
     try {
       // Make API call using axios
-      const response = await axios.post("/api/properties/add", values, {
+      const response = await axios.post(`${BACKEND_URL}/properties/add`, values, {
         headers: {
           "Content-Type": "application/json",
         },
       })
+      console.log(response)
 
       toast({
         title: "Success",
@@ -81,7 +87,7 @@ export const PropertyDetailsForm = () => {
             key={option}
             type="button"
             onClick={() => onChange(option)}
-            className={`h-[46px] px-[15px] rounded-lg flex items-center justify-center font-poppins
+            className={`h - [46px] px - [15px] rounded - lg flex items - center justify - center font - poppins
               ${option === value
                 ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
                 : "border border-[#E1E1E1] text-[#6C696A]"
@@ -304,11 +310,11 @@ export const PropertyDetailsForm = () => {
                             key={num}
                             type="button"
                             onClick={() => field.onChange(num === "5+" ? 6 : Number(num))}
-                            className={`w-[46px] h-[46px] rounded-lg flex items-center justify-center font-poppins
+                            className={`w - [46px] h - [46px] rounded - lg flex items - center justify - center font - poppins
                               ${field.value === (num === "5+" ? 6 : Number(num))
                                 ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
                                 : "border border-[#E1E1E1] text-[#6C696A]"
-                              }`}
+                              } `}
                           >
                             {num}
                           </button>
@@ -334,11 +340,11 @@ export const PropertyDetailsForm = () => {
                             key={num}
                             type="button"
                             onClick={() => field.onChange(num === "5+" ? 6 : Number(num))}
-                            className={`w-[46px] h-[46px] rounded-lg flex items-center justify-center font-poppins
+                            className={`w - [46px] h - [46px] rounded - lg flex items - center justify - center font - poppins
                               ${field.value === (num === "5+" ? 6 : Number(num))
                                 ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
                                 : "border border-[#E1E1E1] text-[#6C696A]"
-                              }`}
+                              } `}
                           >
                             {num}
                           </button>
@@ -362,11 +368,11 @@ export const PropertyDetailsForm = () => {
                             key={num}
                             type="button"
                             onClick={() => field.onChange(num === "3+" ? 4 : Number(num))}
-                            className={`w-[46px] h-[46px] rounded-lg flex items-center justify-center font-poppins
+                            className={`w - [46px] h - [46px] rounded - lg flex items - center justify - center font - poppins
                               ${field.value === (num === "3+" ? 4 : Number(num))
                                 ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
                                 : "border border-[#E1E1E1] text-[#6C696A]"
-                              }`}
+                              } `}
                           >
                             {num}
                           </button>
@@ -387,18 +393,18 @@ export const PropertyDetailsForm = () => {
                   <FormField
                     key={room}
                     control={form.control}
-                    name={`otherRooms.${room}`}
+                    name={`otherRooms.${room} `}
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
                           <button
                             type="button"
                             onClick={() => field.onChange(!field.value)}
-                            className={`h-[46px] px-[15px] rounded-lg flex items-center justify-center font-poppins
+                            className={`h - [46px] px - [15px] rounded - lg flex items - center justify - center font - poppins
                               ${field.value
                                 ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
                                 : "border border-[#E1E1E1] text-[#6C696A]"
-                              }`}
+                              } `}
                           >
                             {room.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())}
                           </button>
@@ -519,7 +525,7 @@ export const PropertyDetailsForm = () => {
                         <FormField
                           key={item}
                           control={form.control}
-                          name={`furnishingDetails.${item}`}
+                          name={`furnishingDetails.${item} `}
                           render={({ field }) => (
                             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                               <div className="space-y-0.5">
@@ -556,7 +562,7 @@ export const PropertyDetailsForm = () => {
                       <FormField
                         key={item}
                         control={form.control}
-                        name={`furnishingDetails.${item}`}
+                        name={`furnishingDetails.${item} `}
                         render={({ field }) => (
                           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                             <div className="space-y-0.5">
@@ -698,13 +704,12 @@ export const PropertyDetailsForm = () => {
                     <FormLabel className="text-base font-medium font-poppins text-[#0F0D0D]">Available From</FormLabel>
                     <FormControl>
                       <div className="relative">
-                        <Input
-                          type="date"
-                          className="h-[58px] px-[15px] border-[#E1E1E1] rounded-lg text-[#9E9E9E] font-poppins"
-                          {...field}
-                          onChange={(e) => field.onChange(e.target.value)}
+                        <DatePicker
+                          selected={field.value ? new Date(field.value) : null}
+                          onChange={(date) => field.onChange(date.toISOString().split('T')[0])}
+                          className="h-[58px] px-[15px] border-[#E1E1E1] rounded-lg text-[#9E9E9E] font-poppins w-full"
+                          dateFormat="yyyy-MM-dd"
                         />
-                        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#0F0D0D] pointer-events-none" />
                       </div>
                     </FormControl>
                   </FormItem>
@@ -768,3 +773,5 @@ export const PropertyDetailsForm = () => {
     </Card>
   )
 }
+
+
