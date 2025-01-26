@@ -21,32 +21,32 @@ const steps = [
 export function AddPropertyForm() {
   const [currentStep, setCurrentStep] = React.useState(1)
 
+  const handleSubmit = () => { console.log("f") }
+
   return (
     <div className="flex flex-col md:flex-row gap-8">
       <StepsSection steps={steps} currentStep={currentStep} />
       <div className="flex-1 space-y-8">
         <div>
           {currentStep === 1 && (
-            <BasicInformation/>
+            <BasicInformation />
           )}
           {currentStep === 2 && (
-<PropertyDetailsForm/>
+            <PropertyDetailsForm />
           )}
           {currentStep === 3 && (
             <div className="max-w-[835px] max-h-[14475px]">
-<PropertyUpload/>
+              <PropertyUpload />
             </div>
-            
+          )}
+          {currentStep === 4 && (
+            <AmenitiesDetails />
+          )}
 
-)}
-{currentStep === 4 && (
-<AmenitiesDetails/>
-)}
+          {currentStep === 5 && (
+            <AddPrice />
+          )}
 
-{currentStep === 5 && (
-<AddPrice/>
-)}
-          
           {/* Add other steps here */}
         </div>
 
@@ -55,7 +55,7 @@ export function AddPropertyForm() {
             {currentStep} of {steps.length} steps
           </div>
           {currentStep === 5 ? (<Button
-            onClick={() => {}}
+            onClick={() => handleSubmit()}
             className="bg-[#7B00FF] text-primary-foreground"
           >
             Submit Property

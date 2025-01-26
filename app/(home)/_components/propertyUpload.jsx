@@ -1,6 +1,8 @@
+'use client'
 
 import { Store } from 'lucide-react'
 import { Button } from "@/components/ui/button"
+import { useRouter } from 'next/navigation'
 
 const steps = [
   {
@@ -18,6 +20,7 @@ const steps = [
 ]
 
 export const PropertyUpload = () => {
+  const router = useRouter();
   return (
     <div className="w-full py-16 px-4 flex flex-col items-center gap-[35px] bg-white">
       <div className="flex flex-col justify-center items-center gap-[5px]">
@@ -48,6 +51,7 @@ export const PropertyUpload = () => {
       </div>
 
       <Button
+        onClick={() => router.push('/dashboard/add-property')}
         className="bg-[#7B00FF] hover:bg-[#7B00FF]/90 text-white font-poppins font-medium text-[16px] leading-[26px] px-[30px] py-[15px] h-[56px] rounded-[10px]"
       >
         Add Property

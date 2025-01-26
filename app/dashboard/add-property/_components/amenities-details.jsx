@@ -26,7 +26,7 @@ export default function AmenitiesDetails() {
   return (
     <Card className="w-full max-w-[835px] p-5 space-y-5">
       <CardHeader className="px-0 pt-0">
-        <CardTitle className="text-xl font-medium text-[#000000]">Amenities Details</CardTitle>
+        <CardTitle className="text-xl font-medium text-[#000000] border-b pb-3">Amenities Details</CardTitle>
       </CardHeader>
       <CardContent className="p-0 space-y-5">
         {/* Amenities */}
