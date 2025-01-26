@@ -19,7 +19,8 @@ import BACKEND_URL from "@/lib/BACKEND_URL"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-export const PropertyDetailsForm = () => {
+
+export const PropertyDetailsForm = ({ body, setBody }) => {
   const [openFurnishingDialog, setOpenFurnishingDialog] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
@@ -46,18 +47,13 @@ export const PropertyDetailsForm = () => {
     },
   })
 
-  async function onSubmit(values) {
+  function onSubmit(values) {
     console.log(values)
     setIsSubmitting(true)
 
     try {
-      // Make API call using axios
-      const response = await axios.post(`${BACKEND_URL}/properties/add`, values, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      console.log(response)
+      body = { ...values };
+      console.log(body)
 
       toast({
         title: "Success",
@@ -70,7 +66,7 @@ export const PropertyDetailsForm = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: error.response?.data?.message || "Failed to add property",
+        description: "Failed to add property",
         variant: "destructive",
       })
     } finally {

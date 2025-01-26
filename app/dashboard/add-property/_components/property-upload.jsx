@@ -17,7 +17,7 @@ const formSchema = z.object({
 
 
 
-export const PropertyUpload = () => {
+export const PropertyUpload = ({ body, setBody }) => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -28,8 +28,10 @@ export const PropertyUpload = () => {
 
   async function onSubmit(data) {
     try {
-      // upload the files to your server
-      console.log("Submitting:", data)
+      const files = { ...data };
+      body = { ...body, ...files }
+
+      console.log("Submitting:", body)
 
       toast({
         title: "Success",

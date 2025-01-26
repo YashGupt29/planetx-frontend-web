@@ -9,6 +9,8 @@ import { PropertyDetailsForm } from "./add-property-details"
 import { PropertyUpload } from "@/app/dashboard/add-property/_components/property-upload"
 import AmenitiesDetails from "./amenities-details"
 import AddPrice from "./add-price"
+import axios from "axios"
+import BACKEND_URL from "@/lib/BACKEND_URL"
 
 const steps = [
   { number: 1, title: "Basic Information" },
@@ -20,8 +22,15 @@ const steps = [
 
 export function AddPropertyForm() {
   const [currentStep, setCurrentStep] = React.useState(1)
+  const [body, setBody] = useState();
 
-  const handleSubmit = () => { console.log("f") }
+  const handleSubmit = async () => {
+    console.log(body);
+    try {
+      const response = await axios.post(`${BACKEND_URL}/properties/add`, body);
+      console.log(response)
+    } catch (error) { console.error(error) }
+  }
 
   return (
     <div className="flex flex-col md:flex-row gap-8">
@@ -32,11 +41,11 @@ export function AddPropertyForm() {
             <BasicInformation />
           )}
           {currentStep === 2 && (
-            <PropertyDetailsForm />
+            <PropertyDetailsForm body={body} setBody={setBody} />
           )}
           {currentStep === 3 && (
             <div className="max-w-[835px] max-h-[14475px]">
-              <PropertyUpload />
+              <PropertyUpload body={body} setBody={setBody} />
             </div>
           )}
           {currentStep === 4 && (
