@@ -22,15 +22,22 @@ const steps = [
 
 export function AddPropertyForm() {
   const [currentStep, setCurrentStep] = React.useState(1)
-  const [body, setBody] = useState();
+  const [body, setBody] = React.useState();
 
-  const handleSubmit = async () => {
+   const handleSubmit = async () => {
     console.log(body);
     try {
-      const response = await axios.post(`${BACKEND_URL}/properties/add`, body);
-      console.log(response)
-    } catch (error) { console.error(error) }
-  }
+      const response = await axios.post(`${BACKEND_URL}/properties/add`, body, {
+        headers: {
+          Authorization: `Bearer ${localStorage.accessToken}`
+        }
+      });
+      console.log(localStorage.accessToken)
+      console.log('Response:', response.data);
+    } catch (error) {
+      console.error('Error:', error.response?.data || error.message);
+    }
+  };
 
   return (
     <div className="flex flex-col md:flex-row gap-8">
@@ -41,7 +48,7 @@ export function AddPropertyForm() {
             <BasicInformation />
           )}
           {currentStep === 2 && (
-            <PropertyDetailsForm body={body} setBody={setBody} />
+            <PropertyDetailsForm body={body} setBody={setBody} currentStep={currentStep} setCurrentStep={setCurrentStep}/>
           )}
           {currentStep === 3 && (
             <div className="max-w-[835px] max-h-[14475px]">

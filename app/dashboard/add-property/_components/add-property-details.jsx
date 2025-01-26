@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState } from "react"
@@ -7,7 +6,7 @@ import { useForm } from "react-hook-form"
 import { ChevronDown, Minus, Plus, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
@@ -16,11 +15,10 @@ import { formSchema } from "../schema"
 import { useToast } from "@/hooks/use-toast"
 import axios from "axios"
 import BACKEND_URL from "@/lib/BACKEND_URL"
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
 
-
-export const PropertyDetailsForm = ({ body, setBody }) => {
+export const PropertyDetailsForm = ({ body, setBody, currentStep, setCurrentStep }) => {
   const [openFurnishingDialog, setOpenFurnishingDialog] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
@@ -28,6 +26,16 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      propertyType: "",
+      category: "",
+      location: {
+        city: "",
+        state: "",
+        locality: "",
+        subLocality: "",
+        apartment: "",
+        houseNumber: "",
+      },
       about: {
         bedrooms: 1,
         bathrooms: 1,
@@ -44,6 +52,17 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
         studyRoom: false,
       },
       furnishingDetails: {},
+      propertyArea: {
+        carpetArea: 0,
+        builtUpArea: undefined,
+      },
+      furnishingStatus: "",
+      totalFloors: 0,
+      propertyOnFloor: 0,
+      availabilityStatus: "",
+      availableFrom: "",
+      ageOfProperty: 0,
+      description: "",
     },
   })
 
@@ -52,7 +71,8 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
     setIsSubmitting(true)
 
     try {
-      body = { ...values };
+      body = { ...values }
+      setBody(body)
       console.log(body)
 
       toast({
@@ -63,6 +83,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
 
       // Reset form after successful submission
       form.reset()
+      setCurrentStep((currentStep) => currentStep + 1)
     } catch (error) {
       toast({
         title: "Error",
@@ -83,10 +104,11 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
             key={option}
             type="button"
             onClick={() => onChange(option)}
-            className={`h - [46px] px - [15px] rounded - lg flex items - center justify - center font - poppins
-              ${option === value
-                ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
-                : "border border-[#E1E1E1] text-[#6C696A]"
+            className={`h-[46px] px-[15px] rounded-lg flex items-center justify-center font-poppins
+              ${
+                option === value
+                  ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
+                  : "border border-[#E1E1E1] text-[#6C696A]"
               }`}
           >
             {option}
@@ -96,7 +118,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
     </div>
   )
 
-  const NumberInput = ({ name, value, onChange }) => (
+  const NumberInput = ({ name, value, onChange, error }) => (
     <div>
       <p className="text-base font-poppins text-[#6C696A] mb-2">{name}</p>
       <div className="flex items-center gap-5">
@@ -116,6 +138,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
           <Plus className="w-5 h-5 text-[#6C696A]" />
         </button>
       </div>
+      {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
     </div>
   )
 
@@ -148,6 +171,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                         <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#0F0D0D] pointer-events-none" />
                       </div>
                     </FormControl>
+                    <FormMessage className="text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -173,6 +197,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                         <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#0F0D0D] pointer-events-none" />
                       </div>
                     </FormControl>
+                    <FormMessage className="text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -190,6 +215,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                         {...field}
                       />
                     </FormControl>
+                    <FormMessage className="text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -213,6 +239,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                         <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#0F0D0D] pointer-events-none" />
                       </div>
                     </FormControl>
+                    <FormMessage className="text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -232,6 +259,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                         {...field}
                       />
                     </FormControl>
+                    <FormMessage className="text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -251,6 +279,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                         {...field}
                       />
                     </FormControl>
+                    <FormMessage className="text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -268,6 +297,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                         {...field}
                       />
                     </FormControl>
+                    <FormMessage className="text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -287,6 +317,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                         {...field}
                       />
                     </FormControl>
+                    <FormMessage className="text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -306,17 +337,19 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                             key={num}
                             type="button"
                             onClick={() => field.onChange(num === "5+" ? 6 : Number(num))}
-                            className={`w - [46px] h - [46px] rounded - lg flex items - center justify - center font - poppins
-                              ${field.value === (num === "5+" ? 6 : Number(num))
-                                ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
-                                : "border border-[#E1E1E1] text-[#6C696A]"
-                              } `}
+                            className={`w-[46px] h-[46px] rounded-lg flex items-center justify-center font-poppins
+                              ${
+                                field.value === (num === "5+" ? 6 : Number(num))
+                                  ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
+                                  : "border border-[#E1E1E1] text-[#6C696A]"
+                              }`}
                           >
                             {num}
                           </button>
                         ))}
                       </div>
                     </FormControl>
+                    <FormMessage className="text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -336,17 +369,19 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                             key={num}
                             type="button"
                             onClick={() => field.onChange(num === "5+" ? 6 : Number(num))}
-                            className={`w - [46px] h - [46px] rounded - lg flex items - center justify - center font - poppins
-                              ${field.value === (num === "5+" ? 6 : Number(num))
-                                ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
-                                : "border border-[#E1E1E1] text-[#6C696A]"
-                              } `}
+                            className={`w-[46px] h-[46px] rounded-lg flex items-center justify-center font-poppins
+                              ${
+                                field.value === (num === "5+" ? 6 : Number(num))
+                                  ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
+                                  : "border border-[#E1E1E1] text-[#6C696A]"
+                              }`}
                           >
                             {num}
                           </button>
                         ))}
                       </div>
                     </FormControl>
+                    <FormMessage className="text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -364,17 +399,19 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                             key={num}
                             type="button"
                             onClick={() => field.onChange(num === "3+" ? 4 : Number(num))}
-                            className={`w - [46px] h - [46px] rounded - lg flex items - center justify - center font - poppins
-                              ${field.value === (num === "3+" ? 4 : Number(num))
-                                ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
-                                : "border border-[#E1E1E1] text-[#6C696A]"
-                              } `}
+                            className={`w-[46px] h-[46px] rounded-lg flex items-center justify-center font-poppins
+                              ${
+                                field.value === (num === "3+" ? 4 : Number(num))
+                                  ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
+                                  : "border border-[#E1E1E1] text-[#6C696A]"
+                              }`}
                           >
                             {num}
                           </button>
                         ))}
                       </div>
                     </FormControl>
+                    <FormMessage className="text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -389,22 +426,24 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                   <FormField
                     key={room}
                     control={form.control}
-                    name={`otherRooms.${room} `}
+                    name={`otherRooms.${room}`}
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
                           <button
                             type="button"
                             onClick={() => field.onChange(!field.value)}
-                            className={`h - [46px] px - [15px] rounded - lg flex items - center justify - center font - poppins
-                              ${field.value
-                                ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
-                                : "border border-[#E1E1E1] text-[#6C696A]"
-                              } `}
+                            className={`h-[46px] px-[15px] rounded-lg flex items-center justify-center font-poppins
+                              ${
+                                field.value
+                                  ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
+                                  : "border border-[#E1E1E1] text-[#6C696A]"
+                              }`}
                           >
                             {room.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())}
                           </button>
                         </FormControl>
+                        <FormMessage className="text-red-500 text-sm" />
                       </FormItem>
                     )}
                   />
@@ -436,6 +475,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                         <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-[#0F0D0D] pointer-events-none" />
                       </div>
                     </FormControl>
+                    <FormMessage className="text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -462,6 +502,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                           <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-[#0F0D0D] pointer-events-none" />
                         </div>
                       </FormControl>
+                      <FormMessage className="text-red-500 text-sm" />
                     </FormItem>
                   )}
                 />
@@ -497,6 +538,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                       value={field.value}
                       onChange={field.onChange}
                     />
+                    <FormMessage className="text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -521,7 +563,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                         <FormField
                           key={item}
                           control={form.control}
-                          name={`furnishingDetails.${item} `}
+                          name={`furnishingDetails.${item}`}
                           render={({ field }) => (
                             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                               <div className="space-y-0.5">
@@ -537,6 +579,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                                   className="w-[100px]"
                                 />
                               </FormControl>
+                              <FormMessage className="text-red-500 text-sm" />
                             </FormItem>
                           )}
                         />
@@ -558,7 +601,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                       <FormField
                         key={item}
                         control={form.control}
-                        name={`furnishingDetails.${item} `}
+                        name={`furnishingDetails.${item}`}
                         render={({ field }) => (
                           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                             <div className="space-y-0.5">
@@ -589,6 +632,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                                 )}
                               </div>
                             </FormControl>
+                            <FormMessage className="text-red-500 text-sm" />
                           </FormItem>
                         )}
                       />
@@ -616,6 +660,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                         onChange={(e) => field.onChange(Number(e.target.value))}
                       />
                     </FormControl>
+                    <FormMessage className="text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -645,6 +690,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                         <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#0F0D0D] pointer-events-none" />
                       </div>
                     </FormControl>
+                    <FormMessage className="text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -658,18 +704,18 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                 <FormField
                   control={form.control}
                   name="parking.covered"
-                  render={({ field }) => (
+                  render={({ field, fieldState: { error } }) => (
                     <FormItem>
-                      <NumberInput name="Covered Parking" value={field.value} onChange={field.onChange} />
+                      <NumberInput name="Covered Parking" value={field.value} onChange={field.onChange} error={error} />
                     </FormItem>
                   )}
                 />
                 <FormField
                   control={form.control}
                   name="parking.open"
-                  render={({ field }) => (
+                  render={({ field, fieldState: { error } }) => (
                     <FormItem>
-                      <NumberInput name="Open Parking" value={field.value} onChange={field.onChange} />
+                      <NumberInput name="Open Parking" value={field.value} onChange={field.onChange} error={error} />
                     </FormItem>
                   )}
                 />
@@ -687,6 +733,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                     value={field.value}
                     onChange={field.onChange}
                   />
+                  <FormMessage className="text-red-500 text-sm" />
                 </FormItem>
               )}
             />
@@ -695,7 +742,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
               <FormField
                 control={form.control}
                 name="availableFrom"
-                render={({ field }) => (
+                render={({ field, fieldState: { error } }) => (
                   <FormItem>
                     <FormLabel className="text-base font-medium font-poppins text-[#0F0D0D]">Available From</FormLabel>
                     <FormControl>
@@ -708,6 +755,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                         />
                       </div>
                     </FormControl>
+                    {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
                   </FormItem>
                 )}
               />
@@ -735,6 +783,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                         <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#0F0D0D] pointer-events-none" />
                       </div>
                     </FormControl>
+                    <FormMessage className="text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -753,6 +802,7 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage className="text-red-500 text-sm" />
                 </FormItem>
               )}
             />
@@ -760,8 +810,9 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
             <Button
               type="submit"
               className="w-full h-[50px] bg-[#7B00FF] text-white font-medium font-poppins rounded-[10px]"
+              disabled={isSubmitting}
             >
-              Submit Property Details
+              {isSubmitting ? "Submitting..." : "Submit Property Details"}
             </Button>
           </form>
         </Form>
@@ -769,5 +820,3 @@ export const PropertyDetailsForm = ({ body, setBody }) => {
     </Card>
   )
 }
-
-

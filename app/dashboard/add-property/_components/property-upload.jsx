@@ -26,10 +26,12 @@ export const PropertyUpload = ({ body, setBody }) => {
     },
   })
 
-  async function onSubmit(data) {
+  function onSubmit(data) {
     try {
       const files = { ...data };
-      body = { ...body, ...files }
+      body = { ...body, files }
+      console.log(body)
+      setBody(body)
 
       console.log("Submitting:", body)
 
@@ -82,6 +84,14 @@ export const PropertyUpload = ({ body, setBody }) => {
             value={form.watch("photos")}
             onChange={(files) => form.setValue("photos", files)}
           />
+
+          <Button
+              type="submit"
+              className="w-full h-[50px] bg-[#7B00FF] text-white font-medium font-poppins rounded-[10px]"
+              
+            >
+              Submit Files
+            </Button>
         </form>
       </Form>
     </div>
