@@ -12,7 +12,7 @@ export const OTPVerification = ({ mobileNumber }) => {
   const [otp, setOtp] = useState(['', '', '', ''])
   const [timeLeft, setTimeLeft] = useState(60)
   const [isExpired, setIsExpired] = useState(false)
-  const [value, setValue] = useLocalStorage('token', "");
+  const [value, setValue] = useLocalStorage('accessToken', "");
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter();
@@ -74,7 +74,7 @@ export const OTPVerification = ({ mobileNumber }) => {
 
       console.log('Login successful:', data)
       //TODO: handle login successful
-      setValue(data.accesstoken);
+      setValue(data.accessToken);
       router.push('/');
 
     } catch (err) {

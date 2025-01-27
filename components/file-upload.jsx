@@ -1,9 +1,9 @@
 "use client";
+
 import * as React from "react"
 import { useDropzone } from "react-dropzone"
 import { Plus } from "lucide-react"
-
-import { cn } from "@/lib/utils"
+import { cn, getVideoDuration } from "@/lib/utils"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { FileList } from "./file-list"
 import { PhotoGallery } from "./photo-gallery"
@@ -100,6 +100,7 @@ export function FileUpload({
         description: "Files uploaded successfully.",
       })
     } catch (error) {
+      console.error(error)
       toast({
         title: "Error",
         description: "An error occurred while uploading files.",

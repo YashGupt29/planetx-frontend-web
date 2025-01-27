@@ -9,6 +9,8 @@ import { PropertyDetailsForm } from "./add-property-details"
 import { PropertyUpload } from "@/app/dashboard/add-property/_components/property-upload"
 import AmenitiesDetails from "./amenities-details"
 import AddPrice from "./add-price"
+import axios from "axios"
+import BACKEND_URL from "@/lib/BACKEND_URL"
 
 const steps = [
   { number: 1, title: "Basic Information" },
@@ -20,6 +22,22 @@ const steps = [
 
 export function AddPropertyForm() {
   const [currentStep, setCurrentStep] = React.useState(1)
+  const [body, setBody] = React.useState();
+
+   const handleSubmit = async () => {
+    console.log(body);
+    try {
+      const response = await axios.post(`${BACKEND_URL}/properties/add`, body, {
+        headers: {
+          Authorization: `Bearer ${localStorage.accessToken}`
+        }
+      });
+      console.log(localStorage.accessToken)
+      console.log('Response:', response.data);
+    } catch (error) {
+      console.error('Error:', error.response?.data || error.message);
+    }
+  };
 
   return (
     <div className="flex flex-col md:flex-row gap-8">
@@ -27,26 +45,24 @@ export function AddPropertyForm() {
       <div className="flex-1 space-y-8">
         <div>
           {currentStep === 1 && (
-            <BasicInformation/>
+            <BasicInformation />
           )}
           {currentStep === 2 && (
-<PropertyDetailsForm/>
+            <PropertyDetailsForm body={body} setBody={setBody} currentStep={currentStep} setCurrentStep={setCurrentStep}/>
           )}
           {currentStep === 3 && (
             <div className="max-w-[835px] max-h-[14475px]">
-<PropertyUpload/>
+              <PropertyUpload body={body} setBody={setBody} />
             </div>
-            
+          )}
+          {currentStep === 4 && (
+            <AmenitiesDetails />
+          )}
 
-)}
-{currentStep === 4 && (
-<AmenitiesDetails/>
-)}
+          {currentStep === 5 && (
+            <AddPrice />
+          )}
 
-{currentStep === 5 && (
-<AddPrice/>
-)}
-          
           {/* Add other steps here */}
         </div>
 
@@ -55,7 +71,7 @@ export function AddPropertyForm() {
             {currentStep} of {steps.length} steps
           </div>
           {currentStep === 5 ? (<Button
-            onClick={() => {}}
+            onClick={() => handleSubmit()}
             className="bg-[#7B00FF] text-primary-foreground"
           >
             Submit Property

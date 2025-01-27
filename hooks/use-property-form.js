@@ -71,6 +71,7 @@ export function usePropertyForm(onSubmit) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    console.log(formData);
     setIsSubmitting(true)
 
     if (validateForm()) {
