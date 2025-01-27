@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { ChevronDown, Minus, Plus, X } from "lucide-react"
@@ -13,12 +13,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Checkbox } from "@/components/ui/checkbox"
 import { formSchema } from "../schema"
 import { useToast } from "@/hooks/use-toast"
-import axios from "axios"
-import BACKEND_URL from "@/lib/BACKEND_URL"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 
-export const PropertyDetailsForm = ({ body, setBody, currentStep, setCurrentStep }) => {
+export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep, setCurrentStep }) => {
   const [openFurnishingDialog, setOpenFurnishingDialog] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
@@ -67,14 +65,12 @@ export const PropertyDetailsForm = ({ body, setBody, currentStep, setCurrentStep
   })
 
   function onSubmit(values) {
-    console.log(values)
     setIsSubmitting(true)
 
     try {
-      body = { ...values }
-      setBody(body)
-      console.log(body)
-
+    
+      setPropertyData({...values});
+   
       toast({
         title: "Success",
         description: "Property added successfully!",
@@ -82,9 +78,10 @@ export const PropertyDetailsForm = ({ body, setBody, currentStep, setCurrentStep
       })
 
       // Reset form after successful submission
-      form.reset()
-      setCurrentStep((currentStep) => currentStep + 1)
+      //form.reset()
+      //setCurrentStep(currentStep + 1)
     } catch (error) {
+      console.error(error)
       toast({
         title: "Error",
         description: "Failed to add property",
@@ -94,6 +91,15 @@ export const PropertyDetailsForm = ({ body, setBody, currentStep, setCurrentStep
       setIsSubmitting(false)
     }
   }
+    // useEffect to log or handle the updated `files` state
+  useEffect(() => {
+    if (propertyData) {
+      console.log("Updated data State:", propertyData)
+      // Perform actions here, like moving to the next step
+      
+      setCurrentStep(currentStep + 1)
+    }
+  }, [propertyData]) 
 
   const SelectButton = ({ name, options, value, onChange }) => (
     <div>
@@ -105,10 +111,9 @@ export const PropertyDetailsForm = ({ body, setBody, currentStep, setCurrentStep
             type="button"
             onClick={() => onChange(option)}
             className={`h-[46px] px-[15px] rounded-lg flex items-center justify-center font-poppins
-              ${
-                option === value
-                  ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
-                  : "border border-[#E1E1E1] text-[#6C696A]"
+              ${option === value
+                ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
+                : "border border-[#E1E1E1] text-[#6C696A]"
               }`}
           >
             {option}
@@ -338,10 +343,9 @@ export const PropertyDetailsForm = ({ body, setBody, currentStep, setCurrentStep
                             type="button"
                             onClick={() => field.onChange(num === "5+" ? 6 : Number(num))}
                             className={`w-[46px] h-[46px] rounded-lg flex items-center justify-center font-poppins
-                              ${
-                                field.value === (num === "5+" ? 6 : Number(num))
-                                  ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
-                                  : "border border-[#E1E1E1] text-[#6C696A]"
+                              ${field.value === (num === "5+" ? 6 : Number(num))
+                                ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
+                                : "border border-[#E1E1E1] text-[#6C696A]"
                               }`}
                           >
                             {num}
@@ -370,10 +374,9 @@ export const PropertyDetailsForm = ({ body, setBody, currentStep, setCurrentStep
                             type="button"
                             onClick={() => field.onChange(num === "5+" ? 6 : Number(num))}
                             className={`w-[46px] h-[46px] rounded-lg flex items-center justify-center font-poppins
-                              ${
-                                field.value === (num === "5+" ? 6 : Number(num))
-                                  ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
-                                  : "border border-[#E1E1E1] text-[#6C696A]"
+                              ${field.value === (num === "5+" ? 6 : Number(num))
+                                ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
+                                : "border border-[#E1E1E1] text-[#6C696A]"
                               }`}
                           >
                             {num}
@@ -400,10 +403,9 @@ export const PropertyDetailsForm = ({ body, setBody, currentStep, setCurrentStep
                             type="button"
                             onClick={() => field.onChange(num === "3+" ? 4 : Number(num))}
                             className={`w-[46px] h-[46px] rounded-lg flex items-center justify-center font-poppins
-                              ${
-                                field.value === (num === "3+" ? 4 : Number(num))
-                                  ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
-                                  : "border border-[#E1E1E1] text-[#6C696A]"
+                              ${field.value === (num === "3+" ? 4 : Number(num))
+                                ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
+                                : "border border-[#E1E1E1] text-[#6C696A]"
                               }`}
                           >
                             {num}
@@ -434,10 +436,9 @@ export const PropertyDetailsForm = ({ body, setBody, currentStep, setCurrentStep
                             type="button"
                             onClick={() => field.onChange(!field.value)}
                             className={`h-[46px] px-[15px] rounded-lg flex items-center justify-center font-poppins
-                              ${
-                                field.value
-                                  ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
-                                  : "border border-[#E1E1E1] text-[#6C696A]"
+                              ${field.value
+                                ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
+                                : "border border-[#E1E1E1] text-[#6C696A]"
                               }`}
                           >
                             {room.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())}
