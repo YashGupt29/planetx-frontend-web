@@ -38,7 +38,7 @@ export function AddPropertyForm() {
       console.log(formData);
       const response = await axios.post(`${BACKEND_URL}/properties/add`, formData, {
         headers: {
-          Authorization: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzc0MGI4YzlkMjk5NmEwMWNiZTQwM2MiLCJtb2JpbGUiOiIrOTE5NTE5ODk2ODYwIiwibmFtZSI6InVzZXIiLCJpYXQiOjE3Mzc5NjUzNDQsImV4cCI6MTczNzk2ODk0NH0.XSdKaQ6HwWUuPUIdMlp9NjBSKmRxYCricp4LM_NB4e4`
+          Authorization: `${localStorage.accessToken.replace('"', '')}`
         }
       });
 
