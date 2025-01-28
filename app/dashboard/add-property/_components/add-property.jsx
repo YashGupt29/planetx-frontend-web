@@ -22,17 +22,26 @@ const steps = [
 
 export function AddPropertyForm() {
   const [currentStep, setCurrentStep] = React.useState(1)
-  const [body, setBody] = React.useState();
+  const [propertyData, setPropertyData] = React.useState();
+  const [files, setFiles] = React.useState({});
 
-   const handleSubmit = async () => {
-    console.log(body);
+  const handleSubmit = async () => {
+    const formData = new FormData();
+
+    formData.append('propertyData', propertyData);
+    formData.append('files', files);
+    console.log(files, propertyData)
+
+    const token = localStorage.accessToken.replaceAll('"', '');
+    console.log(`${token}`);
     try {
-      const response = await axios.post(`${BACKEND_URL}/properties/add`, body, {
+      console.log(formData);
+      const response = await axios.post(`${BACKEND_URL}/properties/add`, formData, {
         headers: {
-          Authorization: `Bearer ${localStorage.accessToken}`
+          Authorization: `${localStorage.accessToken.replace('"', '')}`
         }
       });
-      console.log(localStorage.accessToken)
+
       console.log('Response:', response.data);
     } catch (error) {
       console.error('Error:', error.response?.data || error.message);
@@ -48,11 +57,11 @@ export function AddPropertyForm() {
             <BasicInformation />
           )}
           {currentStep === 2 && (
-            <PropertyDetailsForm body={body} setBody={setBody} currentStep={currentStep} setCurrentStep={setCurrentStep}/>
+            <PropertyDetailsForm propertyData={propertyData} setPropertyData={setPropertyData} currentStep={currentStep} setCurrentStep={setCurrentStep} />
           )}
           {currentStep === 3 && (
             <div className="max-w-[835px] max-h-[14475px]">
-              <PropertyUpload body={body} setBody={setBody} />
+              <PropertyUpload files={files} setFiles={setFiles} currentStep={currentStep} setCurrentStep={setCurrentStep} />
             </div>
           )}
           {currentStep === 4 && (

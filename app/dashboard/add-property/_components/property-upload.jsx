@@ -10,14 +10,13 @@ import { Form } from "@/components/ui/form"
 import { FileUpload } from "@/components/file-upload"
 import { toast } from "@/hooks/use-toast"
 
+// Validation schema
 const formSchema = z.object({
   video: z.array(z.custom()).min(1, "Please upload a property video"),
   photos: z.array(z.custom()).min(5, "Please upload at least 5 photos"),
 })
 
-
-
-export const PropertyUpload = ({ body, setBody }) => {
+export const PropertyUpload = ({ files, setFiles, currentStep, setCurrentStep }) => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -26,19 +25,19 @@ export const PropertyUpload = ({ body, setBody }) => {
     },
   })
 
+  // Function to handle the form submission
   function onSubmit(data) {
     try {
-      const files = { ...data };
-      body = { ...body, files }
-      console.log(body)
-      setBody(body)
-
-      console.log("Submitting:", body)
+      setFiles((prev) => ({
+        ...data, // Merge new data with previous state
+      }))
 
       toast({
         title: "Success",
         description: "Property media uploaded successfully.",
       })
+
+      // Navigate to the next step after state is updated
     } catch (error) {
       toast({
         title: "Error",
@@ -47,6 +46,16 @@ export const PropertyUpload = ({ body, setBody }) => {
       })
     }
   }
+
+  // useEffect to log or handle the updated `files` state
+  React.useEffect(() => {
+    if (files?.video?.length || files?.photos?.length) {
+      console.log("Updated Files State:", files)
+      // Perform actions here, like moving to the next step
+      console.log(files)
+      setCurrentStep(currentStep + 1)
+    }
+  }, [files]) // Runs whenever `files` changes
 
   return (
     <div className="w-[835px] rounded-xl border border-[#E1E1E1] p-5 space-y-5 bg-white">
@@ -86,15 +95,13 @@ export const PropertyUpload = ({ body, setBody }) => {
           />
 
           <Button
-              type="submit"
-              className="w-full h-[50px] bg-[#7B00FF] text-white font-medium font-poppins rounded-[10px]"
-              
-            >
-              Submit Files
-            </Button>
+            type="submit"
+            className="w-full h-[50px] bg-[#7B00FF] text-white font-medium font-poppins rounded-[10px]"
+          >
+            Submit Files
+          </Button>
         </form>
       </Form>
     </div>
   )
 }
-
