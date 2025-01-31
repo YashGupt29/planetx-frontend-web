@@ -1,25 +1,43 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { ChevronDown, Minus, Plus, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Checkbox } from "@/components/ui/checkbox"
-import { formSchema } from "../schema"
-import { useToast } from "@/hooks/use-toast"
-import DatePicker from "react-datepicker"
-import "react-datepicker/dist/react-datepicker.css"
+import { useState, useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { ChevronDown, Minus, Plus, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
+import { formSchema } from "../schema";
+import { useToast } from "@/hooks/use-toast";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep, setCurrentStep }) => {
-  const [openFurnishingDialog, setOpenFurnishingDialog] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const { toast } = useToast()
+export const PropertyDetailsForm = ({
+  propertyData,
+  setPropertyData,
+  currentStep,
+  setCurrentStep,
+}) => {
+  const [openFurnishingDialog, setOpenFurnishingDialog] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -62,44 +80,43 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
       ageOfProperty: 0,
       description: "",
     },
-  })
+  });
 
   function onSubmit(values) {
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
     try {
-    
-      setPropertyData({...values});
-   
+      setPropertyData({ ...values });
       toast({
         title: "Success",
         description: "Property added successfully!",
         variant: "default",
-      })
+      });
+      setCurrentStep((prev) => prev + 1);
 
       // Reset form after successful submission
       //form.reset()
       //setCurrentStep(currentStep + 1)
     } catch (error) {
-      console.error(error)
+      console.error(error);
       toast({
         title: "Error",
         description: "Failed to add property",
         variant: "destructive",
-      })
+      });
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
   }
-    // useEffect to log or handle the updated `files` state
-  useEffect(() => {
-    if (propertyData) {
-      console.log("Updated data State:", propertyData)
-      // Perform actions here, like moving to the next step
-      
-      setCurrentStep(currentStep + 1)
-    }
-  }, [propertyData]) 
+  // useEffect to log or handle the updated `files` state
+  // useEffect(() => {
+  //   if (propertyData) {
+  //     console.log("Updated data State:", propertyData)
+  //     // Perform actions here, like moving to the next step
+
+  //     setCurrentStep(currentStep + 1)
+  //   }
+  // }, [propertyData])
 
   const SelectButton = ({ name, options, value, onChange }) => (
     <div>
@@ -111,9 +128,10 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
             type="button"
             onClick={() => onChange(option)}
             className={`h-[46px] px-[15px] rounded-lg flex items-center justify-center font-poppins
-              ${option === value
-                ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
-                : "border border-[#E1E1E1] text-[#6C696A]"
+              ${
+                option === value
+                  ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
+                  : "border border-[#E1E1E1] text-[#6C696A]"
               }`}
           >
             {option}
@@ -121,7 +139,7 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
         ))}
       </div>
     </div>
-  )
+  );
 
   const NumberInput = ({ name, value, onChange, error }) => (
     <div>
@@ -145,13 +163,15 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
       </div>
       {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
     </div>
-  )
+  );
 
   return (
     <Card className="w-[835px] bg-white border border-[#E1E1E1] rounded-xl p-5">
       <CardContent className="p-0">
         <div className="border-b border-[#E1E1E1] pb-2.5 mb-5">
-          <h2 className="text-xl font-medium font-poppins text-[#000000]">Property Details</h2>
+          <h2 className="text-xl font-medium font-poppins text-[#000000]">
+            Property Details
+          </h2>
         </div>
 
         <Form {...form}>
@@ -162,7 +182,9 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
                 name="propertyType"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-base font-medium font-poppins text-[#0F0D0D]">Type</FormLabel>
+                    <FormLabel className="text-base font-medium font-poppins text-[#0F0D0D]">
+                      Type
+                    </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <select
@@ -212,7 +234,9 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
                 name="location.city"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-base font-medium font-poppins text-[#0F0D0D]">City</FormLabel>
+                    <FormLabel className="text-base font-medium font-poppins text-[#0F0D0D]">
+                      City
+                    </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Enter City"
@@ -230,7 +254,9 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
                 name="location.state"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-base font-medium font-poppins text-[#0F0D0D]">State</FormLabel>
+                    <FormLabel className="text-base font-medium font-poppins text-[#0F0D0D]">
+                      State
+                    </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <select
@@ -294,7 +320,9 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
                 name="location.apartment"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-base font-medium font-poppins text-[#0F0D0D]">Apartment</FormLabel>
+                    <FormLabel className="text-base font-medium font-poppins text-[#0F0D0D]">
+                      Apartment
+                    </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Enter Apartment"
@@ -341,11 +369,14 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
                           <button
                             key={num}
                             type="button"
-                            onClick={() => field.onChange(num === "5+" ? 6 : Number(num))}
+                            onClick={() =>
+                              field.onChange(num === "5+" ? 6 : Number(num))
+                            }
                             className={`w-[46px] h-[46px] rounded-lg flex items-center justify-center font-poppins
-                              ${field.value === (num === "5+" ? 6 : Number(num))
-                                ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
-                                : "border border-[#E1E1E1] text-[#6C696A]"
+                              ${
+                                field.value === (num === "5+" ? 6 : Number(num))
+                                  ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
+                                  : "border border-[#E1E1E1] text-[#6C696A]"
                               }`}
                           >
                             {num}
@@ -372,11 +403,14 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
                           <button
                             key={num}
                             type="button"
-                            onClick={() => field.onChange(num === "5+" ? 6 : Number(num))}
+                            onClick={() =>
+                              field.onChange(num === "5+" ? 6 : Number(num))
+                            }
                             className={`w-[46px] h-[46px] rounded-lg flex items-center justify-center font-poppins
-                              ${field.value === (num === "5+" ? 6 : Number(num))
-                                ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
-                                : "border border-[#E1E1E1] text-[#6C696A]"
+                              ${
+                                field.value === (num === "5+" ? 6 : Number(num))
+                                  ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
+                                  : "border border-[#E1E1E1] text-[#6C696A]"
                               }`}
                           >
                             {num}
@@ -394,18 +428,23 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
                 name="about.balconies"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-base font-medium font-poppins text-[#0F0D0D]">Balconies</FormLabel>
+                    <FormLabel className="text-base font-medium font-poppins text-[#0F0D0D]">
+                      Balconies
+                    </FormLabel>
                     <FormControl>
                       <div className="flex gap-2.5">
                         {[1, 2, 3, "3+"].map((num) => (
                           <button
                             key={num}
                             type="button"
-                            onClick={() => field.onChange(num === "3+" ? 4 : Number(num))}
+                            onClick={() =>
+                              field.onChange(num === "3+" ? 4 : Number(num))
+                            }
                             className={`w-[46px] h-[46px] rounded-lg flex items-center justify-center font-poppins
-                              ${field.value === (num === "3+" ? 4 : Number(num))
-                                ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
-                                : "border border-[#E1E1E1] text-[#6C696A]"
+                              ${
+                                field.value === (num === "3+" ? 4 : Number(num))
+                                  ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
+                                  : "border border-[#E1E1E1] text-[#6C696A]"
                               }`}
                           >
                             {num}
@@ -424,36 +463,43 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
                 Other Rooms <span className="text-[#6C696A]">(Optional)</span>
               </p>
               <div className="flex flex-wrap gap-2.5">
-                {["poojaRoom", "guestRoom", "servantRoom", "studyRoom"].map((room) => (
-                  <FormField
-                    key={room}
-                    control={form.control}
-                    name={`otherRooms.${room}`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <button
-                            type="button"
-                            onClick={() => field.onChange(!field.value)}
-                            className={`h-[46px] px-[15px] rounded-lg flex items-center justify-center font-poppins
-                              ${field.value
-                                ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
-                                : "border border-[#E1E1E1] text-[#6C696A]"
+                {["poojaRoom", "guestRoom", "servantRoom", "studyRoom"].map(
+                  (room) => (
+                    <FormField
+                      key={room}
+                      control={form.control}
+                      name={`otherRooms.${room}`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <button
+                              type="button"
+                              onClick={() => field.onChange(!field.value)}
+                              className={`h-[46px] px-[15px] rounded-lg flex items-center justify-center font-poppins
+                              ${
+                                field.value
+                                  ? "bg-[#F5F5F5] border border-[#7B00FF] text-[#7B00FF]"
+                                  : "border border-[#E1E1E1] text-[#6C696A]"
                               }`}
-                          >
-                            {room.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())}
-                          </button>
-                        </FormControl>
-                        <FormMessage className="text-red-500 text-sm" />
-                      </FormItem>
-                    )}
-                  />
-                ))}
+                            >
+                              {room
+                                .replace(/([A-Z])/g, " $1")
+                                .replace(/^./, (str) => str.toUpperCase())}
+                            </button>
+                          </FormControl>
+                          <FormMessage className="text-red-500 text-sm" />
+                        </FormItem>
+                      )}
+                    />
+                  )
+                )}
               </div>
             </div>
 
             <div className="space-y-2.5">
-              <p className="text-base font-medium font-poppins text-[#0F0D0D]">Add Area of Property</p>
+              <p className="text-base font-medium font-poppins text-[#0F0D0D]">
+                Add Area of Property
+              </p>
               <FormField
                 control={form.control}
                 name="propertyArea.carpetArea"
@@ -466,7 +512,9 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
                           placeholder="Carpet Area"
                           className="h-[58px] pl-[15px] pr-[80px] border-[#E1E1E1] rounded-lg text-[#9E9E9E] font-poppins"
                           {...field}
-                          onChange={(e) => field.onChange(Number(e.target.value))}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
                         />
                         <select className="absolute right-0 w-[70px] h-[58px] bg-transparent border-l border-[#E1E1E1] rounded-r-lg text-[#6C696A] font-poppins appearance-none cursor-pointer pl-2 pr-8">
                           <option value="sqft">Sqft</option>
@@ -493,7 +541,9 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
                             placeholder="Built-up Area"
                             className="h-[58px] pl-[15px] pr-[80px] border-[#E1E1E1] rounded-lg text-[#9E9E9E] font-poppins"
                             {...field}
-                            onChange={(e) => field.onChange(Number(e.target.value))}
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
                           />
                           <select className="absolute right-0 w-[70px] h-[58px] bg-transparent border-l border-[#E1E1E1] rounded-r-lg text-[#6C696A] font-poppins appearance-none cursor-pointer pl-2 pr-8">
                             <option value="sqft">Sqft</option>
@@ -511,7 +561,9 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
               {form.watch("propertyArea.builtUpArea") !== undefined ? (
                 <div
                   className="flex items-center gap-2 text-sm font-poppins cursor-pointer"
-                  onClick={() => form.setValue("propertyArea.builtUpArea", undefined)}
+                  onClick={() =>
+                    form.setValue("propertyArea.builtUpArea", undefined)
+                  }
                 >
                   <X className="w-4 h-4 text-[#F44336]" />
                   <span className="text-[#F44336]">Remove Built-up Area</span>
@@ -535,7 +587,11 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
                   <FormItem>
                     <SelectButton
                       name="Furnishing Status"
-                      options={["Unfurnished", "Semi Furnished", "Fully Furnished"]}
+                      options={[
+                        "Unfurnished",
+                        "Semi Furnished",
+                        "Fully Furnished",
+                      ]}
                       value={field.value}
                       onChange={field.onChange}
                     />
@@ -543,7 +599,10 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
                   </FormItem>
                 )}
               />
-              <Dialog open={openFurnishingDialog} onOpenChange={setOpenFurnishingDialog}>
+              <Dialog
+                open={openFurnishingDialog}
+                onOpenChange={setOpenFurnishingDialog}
+              >
                 <DialogTrigger asChild>
                   <Button
                     type="button"
@@ -559,33 +618,43 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
                     </DialogTitle>
                   </DialogHeader>
                   <div className="grid gap-4 py-4">
-                    {["fans", "lights", "tv", "beds", "ac", "wardrobes", "exhaustFans", "curtains", "floorLamps"].map(
-                      (item) => (
-                        <FormField
-                          key={item}
-                          control={form.control}
-                          name={`furnishingDetails.${item}`}
-                          render={({ field }) => (
-                            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                              <div className="space-y-0.5">
-                                <FormLabel className="text-base font-poppins">
-                                  {item.charAt(0).toUpperCase() + item.slice(1)}
-                                </FormLabel>
-                              </div>
-                              <FormControl>
-                                <Input
-                                  type="number"
-                                  {...field}
-                                  onChange={(e) => field.onChange(Number(e.target.value))}
-                                  className="w-[100px]"
-                                />
-                              </FormControl>
-                              <FormMessage className="text-red-500 text-sm" />
-                            </FormItem>
-                          )}
-                        />
-                      ),
-                    )}
+                    {[
+                      "fans",
+                      "lights",
+                      "tv",
+                      "beds",
+                      "ac",
+                      "wardrobes",
+                      "exhaustFans",
+                      "curtains",
+                      "floorLamps",
+                    ].map((item) => (
+                      <FormField
+                        key={item}
+                        control={form.control}
+                        name={`furnishingDetails.${item}`}
+                        render={({ field }) => (
+                          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                            <div className="space-y-0.5">
+                              <FormLabel className="text-base font-poppins">
+                                {item.charAt(0).toUpperCase() + item.slice(1)}
+                              </FormLabel>
+                            </div>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                {...field}
+                                onChange={(e) =>
+                                  field.onChange(Number(e.target.value))
+                                }
+                                className="w-[100px]"
+                              />
+                            </FormControl>
+                            <FormMessage className="text-red-500 text-sm" />
+                          </FormItem>
+                        )}
+                      />
+                    ))}
                     {[
                       "diningTable",
                       "sofa",
@@ -679,7 +748,9 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
                         <select
                           {...field}
                           className="w-full h-[58px] px-[15px] border border-[#E1E1E1] rounded-lg text-[#9E9E9E] font-poppins appearance-none"
-                          onChange={(e) => field.onChange(Number(e.target.value))}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
                         >
                           <option value="">Select Floor</option>
                           {[...Array(10)].map((_, i) => (
@@ -707,7 +778,12 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
                   name="parking.covered"
                   render={({ field, fieldState: { error } }) => (
                     <FormItem>
-                      <NumberInput name="Covered Parking" value={field.value} onChange={field.onChange} error={error} />
+                      <NumberInput
+                        name="Covered Parking"
+                        value={field.value}
+                        onChange={field.onChange}
+                        error={error}
+                      />
                     </FormItem>
                   )}
                 />
@@ -716,7 +792,12 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
                   name="parking.open"
                   render={({ field, fieldState: { error } }) => (
                     <FormItem>
-                      <NumberInput name="Open Parking" value={field.value} onChange={field.onChange} error={error} />
+                      <NumberInput
+                        name="Open Parking"
+                        value={field.value}
+                        onChange={field.onChange}
+                        error={error}
+                      />
                     </FormItem>
                   )}
                 />
@@ -745,18 +826,26 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
                 name="availableFrom"
                 render={({ field, fieldState: { error } }) => (
                   <FormItem>
-                    <FormLabel className="text-base font-medium font-poppins text-[#0F0D0D]">Available From</FormLabel>
+                    <FormLabel className="text-base font-medium font-poppins text-[#0F0D0D]">
+                      Available From
+                    </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <DatePicker
                           selected={field.value ? new Date(field.value) : null}
-                          onChange={(date) => field.onChange(date.toISOString().split('T')[0])}
+                          onChange={(date) =>
+                            field.onChange(date.toISOString().split("T")[0])
+                          }
                           className="h-[58px] px-[15px] border-[#E1E1E1] rounded-lg text-[#9E9E9E] font-poppins w-full"
                           dateFormat="yyyy-MM-dd"
                         />
                       </div>
                     </FormControl>
-                    {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
+                    {error && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {error.message}
+                      </p>
+                    )}
                   </FormItem>
                 )}
               />
@@ -766,13 +855,17 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
                 name="ageOfProperty"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-base font-medium font-poppins text-[#0F0D0D]">Age of Property</FormLabel>
+                    <FormLabel className="text-base font-medium font-poppins text-[#0F0D0D]">
+                      Age of Property
+                    </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <select
                           {...field}
                           className="w-full h-[58px] px-[15px] border border-[#E1E1E1] rounded-lg text-[#9E9E9E] font-poppins appearance-none"
-                          onChange={(e) => field.onChange(Number(e.target.value))}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
                         >
                           <option value="">Select Age of Property</option>
                           {[...Array(20)].map((_, i) => (
@@ -795,7 +888,9 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-base font-medium font-poppins text-[#0F0D0D]">Add Description</FormLabel>
+                  <FormLabel className="text-base font-medium font-poppins text-[#0F0D0D]">
+                    Add Description
+                  </FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Add Description"
@@ -819,5 +914,5 @@ export const PropertyDetailsForm = ({ propertyData, setPropertyData, currentStep
         </Form>
       </CardContent>
     </Card>
-  )
-}
+  );
+};

@@ -1,113 +1,113 @@
+"use client";
 
-'use client'
-
-import { useState, useEffect } from 'react'
-import Image from 'next/image'
-import { Button } from '@/components/ui/button'
-import BACKEND_URL from '@/lib/BACKEND_URL'
-import useLocalStorage from '@/hooks/localStorage'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import BACKEND_URL from "@/lib/BACKEND_URL";
+import useLocalStorage from "@/hooks/localStorage";
+import { useRouter } from "next/navigation";
 
 export const OTPVerification = ({ mobileNumber }) => {
-  const [otp, setOtp] = useState(['', '', '', ''])
-  const [timeLeft, setTimeLeft] = useState(60)
-  const [isExpired, setIsExpired] = useState(false)
-  const [value, setValue] = useLocalStorage('accessToken', "");
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [otp, setOtp] = useState(["", "", "", ""]);
+  const [timeLeft, setTimeLeft] = useState(60);
+  const [isExpired, setIsExpired] = useState(false);
+  const [value, setValue] = useLocalStorage("accessToken", "");
+  const [refreshToken, setRefreshToken] = useLocalStorage("refreshToken", "");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const router = useRouter();
 
   useEffect(() => {
     if (timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
-      return () => clearTimeout(timer)
+      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      return () => clearTimeout(timer);
     } else {
-      setIsExpired(true)
+      setIsExpired(true);
     }
-  }, [timeLeft])
+  }, [timeLeft]);
 
   const handleOtpChange = (index, value) => {
     if (value.length <= 1 && /^[0-9]*$/.test(value)) {
-      const newOtp = [...otp]
-      newOtp[index] = value
-      setOtp(newOtp)
+      const newOtp = [...otp];
+      newOtp[index] = value;
+      setOtp(newOtp);
 
       // Auto-focus next input
       if (value && index < 3) {
-        const nextInput = document.getElementById(`otp-${index + 1}`)
-        nextInput?.focus()
+        const nextInput = document.getElementById(`otp-${index + 1}`);
+        nextInput?.focus();
       }
     }
-  }
+  };
 
   const handleKeyDown = (index, e) => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
-      const prevInput = document.getElementById(`otp-${index - 1}`)
-      prevInput?.focus()
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
+      const prevInput = document.getElementById(`otp-${index - 1}`);
+      prevInput?.focus();
     }
-  }
+  };
 
   const verifyOTP = async () => {
-    const enteredOtp = otp.join('')
+    const enteredOtp = otp.join("");
     if (enteredOtp.length !== 4) {
-      setError('Please enter a valid 4-digit OTP.')
-      return
+      setError("Please enter a valid 4-digit OTP.");
+      return;
     }
 
-    setLoading(true)
-    setError('')
+    setLoading(true);
+    setError("");
 
     try {
       console.log(enteredOtp, mobileNumber);
       const response = await fetch(`${BACKEND_URL}/auth/verify-otp`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mobile: '+91' + mobileNumber, otp: enteredOtp }),
-      })
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mobile: "+91" + mobileNumber, otp: enteredOtp }),
+      });
 
-      const data = await response.json()
+      const data = await response.json();
       console.log(data);
 
       if (!response.ok) {
-        throw new Error(data.message || 'Verification failed')
+        throw new Error(data.message || "Verification failed");
       }
 
-      console.log('Login successful:', data)
+      console.log("Login successful:", data);
       //TODO: handle login successful
       setValue(data.accessToken);
-      router.push('/');
-
+      setRefreshToken(data.refreshedToken);
+      router.push("/");
     } catch (err) {
-      setError(err.message || 'An error occurred while verifying OTP')
+      setError(err.message || "An error occurred while verifying OTP");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const resendOTP = async () => {
-    setTimeLeft(60)
-    setIsExpired(false)
-    setError('')
+    setTimeLeft(60);
+    setIsExpired(false);
+    setError("");
 
     try {
       const response = await fetch(`${BACKEND_URL}/auth/send-otp`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mobile: '+91' + mobileNumber }),
-      })
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mobile: "+91" + mobileNumber }),
+      });
 
-      const data = await response.json()
+      const data = await response.json();
       console.log(data);
 
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to resend OTP')
+        throw new Error(data.message || "Failed to resend OTP");
       }
 
-      console.log('OTP resent successfully')
+      console.log("OTP resent successfully");
     } catch (err) {
-      setError(err.message || 'An error occurred while resending OTP')
+      setError(err.message || "An error occurred while resending OTP");
     }
-  }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center px-4">
@@ -146,7 +146,11 @@ export const OTPVerification = ({ mobileNumber }) => {
                 onChange={(e) => handleOtpChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
                 className={`w-[58px] h-[58px] bg-[#F5F5F5] rounded-lg text-center text-[22px] font-medium
-                  ${digit ? 'border border-[#7B00FF] text-[#7B00FF]' : 'border border-[#E1E1E1]'}
+                  ${
+                    digit
+                      ? "border border-[#7B00FF] text-[#7B00FF]"
+                      : "border border-[#E1E1E1]"
+                  }
                   focus:outline-none focus:border-[#7B00FF] focus:ring-1 focus:ring-[#7B00FF]`}
                 maxLength={1}
                 aria-label={`Digit ${index + 1} of OTP`}
@@ -163,7 +167,7 @@ export const OTPVerification = ({ mobileNumber }) => {
             disabled={loading}
             className="w-[450px] h-[50px] bg-[#7B00FF] hover:bg-[#7B00FF]/90 rounded-[10px] text-base font-medium"
           >
-            {loading ? 'Verifying...' : 'Verify OTP'}
+            {loading ? "Verifying..." : "Verify OTP"}
           </Button>
 
           {/* Timer and Resend */}
@@ -187,7 +191,6 @@ export const OTPVerification = ({ mobileNumber }) => {
           </div>
         </div>
       </div>
-    </div >
-  )
-}
-
+    </div>
+  );
+};

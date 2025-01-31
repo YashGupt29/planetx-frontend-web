@@ -1,15 +1,19 @@
+"use client";
 
-"use client"
-
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { LayoutDashboard, Heart, User, MessageSquare, ClipboardList } from "lucide-react"
-
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  LayoutDashboard,
+  Heart,
+  User,
+  MessageSquare,
+  ClipboardList,
+} from "lucide-react";
 
 export const AppSidebar = () => {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
-  const sidebarItems= [
+  const sidebarItems = [
     {
       icon: <LayoutDashboard className="w-6 h-6" />,
       label: "Dashboard",
@@ -18,17 +22,17 @@ export const AppSidebar = () => {
     {
       icon: <Heart className="w-6 h-6" />,
       label: "Wishlist",
-      href: "/wishlist",
+      href: "/dashboard/wishlist",
     },
     {
       icon: <User className="w-6 h-6" />,
       label: "Profile",
-      href: "/profile",
+      href: "/dashboard/profile",
     },
     {
       icon: <MessageSquare className="w-6 h-6" />,
       label: "Share Feedback",
-      href: "/feedback",
+      href: "/dashboard/feedback",
     },
     {
       icon: <ClipboardList className="w-6 h-6" />,
@@ -40,13 +44,13 @@ export const AppSidebar = () => {
       label: "Terms & Conditions",
       href: "/terms",
     },
-  ]
+  ];
 
   return (
     <aside className="w-[280px] bg-white flex flex-col border-r max-h-full">
       <nav className="flex flex-col p-5 pt-5 gap-[15px]">
         {sidebarItems.map((item) => {
-          const isActive = pathname === item.href
+          const isActive = pathname === item.href;
           return (
             <Link
               key={item.href}
@@ -64,11 +68,9 @@ export const AppSidebar = () => {
               {item.icon}
               <span className="font-medium text-base">{item.label}</span>
             </Link>
-          )
+          );
         })}
       </nav>
     </aside>
-  )
-}
-
-
+  );
+};
