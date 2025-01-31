@@ -10,6 +10,7 @@ import AmenitiesDetails from "./amenities-details";
 import AddPrice from "./add-price";
 import axios from "axios";
 import BACKEND_URL from "@/lib/BACKEND_URL";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const steps = [
   { number: 1, title: "Basic Information" },
@@ -20,10 +21,31 @@ const steps = [
 ];
 
 export function AddPropertyForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [currentStep, setCurrentStep] = React.useState(1);
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [propertyData, setPropertyData] = React.useState({});
   const [files, setFiles] = React.useState({ images: [], video: null });
+  const [lookingFor, setLookingFor] = React.useState(
+    searchParams.get("lookingFor") || "Buyer"
+  );
+  const [propertyKind, setPropertyKind] = React.useState(
+    searchParams.get("propertyKind") || "Residential"
+  );
+  const [propertyType, setPropertyType] = React.useState(
+    searchParams.get("propertyType") || "For Sale"
+  );
+
+  React.useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    params.set("lookingFor", lookingFor);
+    params.set("propertyKind", propertyKind);
+    params.set("propertyType", propertyType);
+
+    router.push(`?${params.toString()}`, { scroll: false });
+  }, [lookingFor, propertyKind, propertyType]);
 
   const handleSubmit = async () => {
     const formData = new FormData();
@@ -65,7 +87,16 @@ export function AddPropertyForm() {
       <StepsSection steps={steps} currentStep={currentStep} />
       <div className="flex-1 space-y-8">
         <div>
-          {currentStep === 1 && <BasicInformation />}
+          {currentStep === 1 && (
+            <BasicInformation
+              lookingFor={lookingFor}
+              setLookingFor={setLookingFor}
+              propertyKind={propertyKind}
+              setPropertyKind={setPropertyKind}
+              propertyType={propertyType}
+              setPropertyType={setPropertyType}
+            />
+          )}
           {currentStep === 2 && (
             <PropertyDetailsForm
               propertyData={propertyData}
@@ -118,15 +149,8 @@ export function AddPropertyForm() {
           ) : (
             <Button
               onClick={(event) => {
-                event.stopPropagation(); // Stop event from bubbling up
-                if (isProcessing) return;
-
-                setIsProcessing(true);
                 setCurrentStep((prev) => Math.min(prev + 1, 5));
-
-                setTimeout(() => setIsProcessing(false), 300);
               }}
-              disabled={isProcessing}
               className="bg-[#7B00FF] text-primary-foreground"
             >
               Next
