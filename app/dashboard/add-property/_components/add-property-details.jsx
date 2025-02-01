@@ -28,6 +28,7 @@ import { formSchema } from "../schema";
 import { useToast } from "@/hooks/use-toast";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useSearchParams } from "next/navigation";
 
 export const PropertyDetailsForm = ({
   propertyData,
@@ -38,12 +39,16 @@ export const PropertyDetailsForm = ({
   const [openFurnishingDialog, setOpenFurnishingDialog] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const searchParams = useSearchParams();
+  const lookingFor = searchParams.get("lookingFor");
+  const propertyKind = searchParams.get("propertyKind");
+  const propertyType = searchParams.get("propertyType");
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      propertyType: "",
-      category: "",
+      propertyType: propertyType,
+      category: propertyKind,
       location: {
         city: "",
         state: "",
@@ -93,10 +98,6 @@ export const PropertyDetailsForm = ({
         variant: "default",
       });
       setCurrentStep((prev) => prev + 1);
-
-      // Reset form after successful submission
-      //form.reset()
-      //setCurrentStep(currentStep + 1)
     } catch (error) {
       console.error(error);
       toast({
@@ -108,15 +109,6 @@ export const PropertyDetailsForm = ({
       setIsSubmitting(false);
     }
   }
-  // useEffect to log or handle the updated `files` state
-  // useEffect(() => {
-  //   if (propertyData) {
-  //     console.log("Updated data State:", propertyData)
-  //     // Perform actions here, like moving to the next step
-
-  //     setCurrentStep(currentStep + 1)
-  //   }
-  // }, [propertyData])
 
   const SelectButton = ({ name, options, value, onChange }) => (
     <div>
@@ -190,10 +182,12 @@ export const PropertyDetailsForm = ({
                         <select
                           {...field}
                           className="w-full h-[58px] px-[15px] border border-[#E1E1E1] rounded-lg text-[#9E9E9E] font-poppins appearance-none"
+                          disabled
                         >
                           <option value="">Select Type</option>
                           <option value="For Sale">For Sale</option>
                           <option value="For Rent">For Rent</option>
+                          <option value="Commercial">Commercial</option>
                         </select>
                         <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#0F0D0D] pointer-events-none" />
                       </div>
@@ -216,10 +210,19 @@ export const PropertyDetailsForm = ({
                         <select
                           {...field}
                           className="w-full h-[58px] px-[15px] border border-[#E1E1E1] rounded-lg text-[#9E9E9E] font-poppins appearance-none"
+                          disabled
                         >
                           <option value="">Select Category</option>
                           <option value="Residential">Residential</option>
-                          <option value="Commercial">Commercial</option>
+                          <option value="pg">Paying Guest</option>
+                          <option value="Hotel">Hotel</option>
+                          <option value="Office">Office</option>
+                          <option value="Shop">Shop</option>
+                          <option value="Warehouse">Warehouse</option>
+                          <option value="Shared Warehouse">
+                            Shared Warehouse
+                          </option>
+                          <option value="EventSpace">EventSpace</option>
                         </select>
                         <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#0F0D0D] pointer-events-none" />
                       </div>
