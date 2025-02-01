@@ -1,17 +1,6 @@
+import * as z from "zod";
 
-import * as z from "zod"
-
-export const formSchema = z.object({
-  propertyType: z.enum(["For Sale", "For Rent"]),
-  category: z.enum(["Residential", "Commercial"]),
-  location: z.object({
-    city: z.string().min(1, "City is required"),
-    state: z.string().min(1, "State is required"),
-    locality: z.string().min(1, "Locality is required"),
-    subLocality: z.string().optional(),
-    apartment: z.string().min(1, "Apartment is required"),
-    houseNumber: z.string().optional(),
-  }),
+export const ResidentialformSchema = z.object({
   about: z.object({
     bedrooms: z.number().min(1).max(10),
     bathrooms: z.number().min(1).max(10),
@@ -27,7 +16,11 @@ export const formSchema = z.object({
     servantRoom: z.boolean(),
     studyRoom: z.boolean(),
   }),
-  furnishingStatus: z.enum(["Unfurnished", "Semi Furnished", "Fully Furnished"]),
+  furnishingStatus: z.enum([
+    "Unfurnished",
+    "Semi Furnished",
+    "Fully Furnished",
+  ]),
   furnishingDetails: z.object({
     fans: z.number().optional(),
     lights: z.number().optional(),
@@ -61,6 +54,4 @@ export const formSchema = z.object({
   availableFrom: z.string(),
   ageOfProperty: z.number().min(0),
   description: z.string().min(1, "Description is required"),
-})
-
-
+});

@@ -15,7 +15,7 @@ const lookingForOptions = [
 
 const propertyKindOptions = [
   { value: "Residential", label: "Residential" },
-  { value: "pg", label: "Paying Guest" },
+  { value: "Pg", label: "Paying Guest" },
   { value: "Hotel", label: "Hotel" },
   { value: "Office", label: "Office" },
   { value: "Shop", label: "Shop" },
