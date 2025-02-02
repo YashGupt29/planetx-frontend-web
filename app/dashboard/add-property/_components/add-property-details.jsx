@@ -36,6 +36,10 @@ import { ResidentialformSchema } from "../_SchemaValidation/ResidentialFormschem
 import { BasePropertySchema } from "../_SchemaValidation/basePropertySchema";
 import Hotel from "./_addPropertyComponents/hotel";
 import { HotelSchema } from "../_SchemaValidation/hotelSchema";
+import Office from "./_addPropertyComponents/office";
+import Shop from "./_addPropertyComponents/shop";
+import { OfficeSchema } from "../_SchemaValidation/officeSchema";
+import { ShopSchema } from "../_SchemaValidation/shopSchema";
 
 export const PropertyDetailsForm = ({
   propertyData,
@@ -47,7 +51,6 @@ export const PropertyDetailsForm = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const searchParams = useSearchParams();
-  const lookingFor = searchParams.get("lookingFor");
   const propertyKind = searchParams.get("propertyKind");
   const propertyType = searchParams.get("propertyType");
 
@@ -58,6 +61,10 @@ export const PropertyDetailsForm = ({
       ? BasePropertySchema.merge(PGFormSchema)
       : propertyKind === "Hotel"
       ? BasePropertySchema.merge(HotelSchema)
+      : propertyKind === "Office"
+      ? BasePropertySchema.merge(OfficeSchema)
+      : propertyKind === "Shop"
+      ? BasePropertySchema.merge(ShopSchema)
       : BasePropertySchema;
 
   const form = useForm({
@@ -133,6 +140,7 @@ export const PropertyDetailsForm = ({
             covered: 0,
             open: 0,
           },
+          ageOfProperty: 0,
           description: "",
         };
       } else if (propertyKind === "Hotel") {
@@ -171,16 +179,95 @@ export const PropertyDetailsForm = ({
             covered: 2,
             open: 5,
           },
+          ageOfProperty: 0,
+          description: "",
+        };
+      } else if (propertyKind === "Office") {
+        return {
+          propertyType: propertyType,
+          category: propertyKind,
+          location: {
+            city: "",
+            state: "",
+            locality: "",
+            subLocality: "",
+            apartment: "",
+            houseNumber: "",
+          },
+          subCategory: "Office",
+          transactionType: "",
+          propertyDetails: {
+            propertyName: "",
+            officeType: "",
+            builtUpArea: { size: 0, unit: "sq ft" },
+            carpetArea: { size: 0, unit: "sq ft" },
+            furnishedStatus: "",
+            furnishingDetails: {
+              workstations: 0,
+              cabinRooms: 0,
+              meetingRooms: 0,
+              conferenceRooms: 0,
+              pantry: false,
+              cafeteria: false,
+              serverRoom: false,
+              airConditioning: false,
+            },
+            floorDetails: {
+              totalFloors: 1,
+              officeOnFloor: 1,
+            },
+          },
+          ageOfProperty: 0,
+          description: "",
+        };
+      } else if (propertyKind === "Shop") {
+        return {
+          propertyType: propertyType,
+          category: propertyKind,
+          location: {
+            city: "",
+            state: "",
+            locality: "",
+            subLocality: "",
+            apartment: "",
+            houseNumber: "",
+          },
+          subCategory: "Retail/Shop",
+          transactionType: "For Sale",
+          propertyDetails: {
+            propertyName: "",
+            shopType: "Standalone Shop",
+            builtUpArea: { size: 0, unit: "sq ft" },
+            carpetArea: { size: 0, unit: "sq ft" },
+            furnishedStatus: "Unfurnished",
+            furnishingDetails: {
+              shelves: 0,
+              displayRacks: 0,
+              cashCounter: 0,
+              airConditioning: false,
+              cctvCameras: 0,
+              powerBackup: false,
+              washroom: false,
+              pantry: false,
+            },
+            floorDetails: {
+              totalFloors: 1,
+              shopOnFloor: 1,
+            },
+          },
+
+          ageOfProperty: 0,
           description: "",
         };
       }
+
       return {};
     })(),
   });
 
   function onSubmit(values) {
-    setIsSubmitting(true);
     console.log(values);
+    setIsSubmitting(true);
 
     try {
       setPropertyData({ ...values });
@@ -413,6 +500,10 @@ export const PropertyDetailsForm = ({
               <Pg form={form} />
             ) : propertyKind == "Hotel" ? (
               <Hotel form={form} />
+            ) : propertyKind == "Office" ? (
+              <Office form={form} />
+            ) : propertyKind == "Shop" ? (
+              <Shop form={form} />
             ) : (
               ""
             )}
