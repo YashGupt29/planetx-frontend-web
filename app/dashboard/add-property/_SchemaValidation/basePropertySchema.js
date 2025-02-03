@@ -20,4 +20,10 @@ export const BasePropertySchema = z.object({
     apartment: z.string().min(1, "Apartment is required"),
     houseNumber: z.string().optional(),
   }),
+  availabilityStatus: z.string().min(1, "Availability status is required"),
+  availableFrom: z.preprocess((arg) => {
+    if (typeof arg === "string" || arg instanceof Date) return new Date(arg);
+  }, z.date()),
+  ageOfProperty: z.number(),
+  description: z.string().min(1, "Description is required"),
 });

@@ -115,7 +115,9 @@ export function AddPropertyForm() {
               />
             </div>
           )}
-          {currentStep === 4 && <AmenitiesDetails />}
+          {currentStep === 4 && (
+            <AmenitiesDetails propertyData={propertyData} />
+          )}
 
           {currentStep === 5 && <AddPrice />}
         </div>

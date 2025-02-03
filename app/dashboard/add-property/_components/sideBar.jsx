@@ -37,12 +37,12 @@ export const AppSidebar = () => {
     {
       icon: <ClipboardList className="w-6 h-6" />,
       label: "Privacy & Policy",
-      href: "/privacy",
+      href: "/dashboard/privacy-policy",
     },
     {
       icon: <ClipboardList className="w-6 h-6" />,
       label: "Terms & Conditions",
-      href: "/terms",
+      href: "/dashboard/terms-conditions",
     },
   ];
 

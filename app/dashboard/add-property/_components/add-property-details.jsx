@@ -53,7 +53,6 @@ export const PropertyDetailsForm = ({
   currentStep,
   setCurrentStep,
 }) => {
-  const [openFurnishingDialog, setOpenFurnishingDialog] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const searchParams = useSearchParams();
@@ -364,7 +363,6 @@ export const PropertyDetailsForm = ({
     })(),
   });
   function onSubmit(values) {
-    console.log(values);
     setIsSubmitting(true);
 
     try {

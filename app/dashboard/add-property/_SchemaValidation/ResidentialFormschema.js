@@ -50,8 +50,4 @@ export const ResidentialformSchema = z.object({
     covered: z.number().min(0),
     open: z.number().min(0),
   }),
-  availabilityStatus: z.enum(["Ready to Move", "Under Construction"]),
-  availableFrom: z.string(),
-  ageOfProperty: z.number().min(0),
-  description: z.string().min(1, "Description is required"),
 });

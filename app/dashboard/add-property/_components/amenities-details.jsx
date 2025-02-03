@@ -1,32 +1,44 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
+import * as React from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 
-export default function AmenitiesDetails() {
-  const [selectedAmenities, setSelectedAmenities] = React.useState([])
-  const [powerBackup, setPowerBackup] = React.useState("None")
-  const [facing, setFacing] = React.useState("North")
-  const [waterSource, setWaterSource] = React.useState("Municipal corporation")
-  const [features, setFeatures] = React.useState(["Swimming Pool"])
-  const [otherFeatures, setOtherFeatures] = React.useState(["Separate entry for servant room"])
-  const [locationAdvantages, setLocationAdvantages] = React.useState(["Close to School"])
+export default function AmenitiesDetails({ propertyData }) {
+  const [selectedAmenities, setSelectedAmenities] = React.useState([]);
+  const [powerBackup, setPowerBackup] = React.useState("None");
+  const [facing, setFacing] = React.useState("North");
+  const [waterSource, setWaterSource] = React.useState("Municipal corporation");
+  const [features, setFeatures] = React.useState(["Swimming Pool"]);
+  const [otherFeatures, setOtherFeatures] = React.useState([
+    "Separate entry for servant room",
+  ]);
+  const [locationAdvantages, setLocationAdvantages] = React.useState([
+    "Close to School",
+  ]);
 
   const toggleSelection = (array, setArray, value) => {
     if (array.includes(value)) {
-      setArray(array.filter((item) => item !== value))
+      setArray(array.filter((item) => item !== value));
     } else {
-      setArray([...array, value])
+      setArray([...array, value]);
     }
-  }
+  };
 
   return (
     <Card className="w-full max-w-[835px] p-5 space-y-5">
       <CardHeader className="px-0 pt-0">
-        <CardTitle className="text-xl font-medium text-[#000000] border-b pb-3">Amenities Details</CardTitle>
+        <CardTitle className="text-xl font-medium text-[#000000] border-b pb-3">
+          Amenities Details
+        </CardTitle>
       </CardHeader>
       <CardContent className="p-0 space-y-5">
         {/* Amenities */}
@@ -52,7 +64,13 @@ export default function AmenitiesDetails() {
                     ? "bg-[#F5F5F5] border-[#7B00FF] text-[#7B00FF]"
                     : "border-[#E1E1E1] text-[#6C696A]"
                 }`}
-                onClick={() => toggleSelection(selectedAmenities, setSelectedAmenities, amenity)}
+                onClick={() =>
+                  toggleSelection(
+                    selectedAmenities,
+                    setSelectedAmenities,
+                    amenity
+                  )
+                }
               >
                 {amenity}
               </Button>
@@ -83,24 +101,33 @@ export default function AmenitiesDetails() {
 
         {/* Property Facing */}
         <div className="space-y-2">
-          <p className="text-base font-medium text-[#0F0D0D]">Property facing</p>
+          <p className="text-base font-medium text-[#0F0D0D]">
+            Property facing
+          </p>
           <div className="flex flex-wrap gap-2">
-            {["North", "South", "East", "West", "North-East", "North-West", "South-East", "South-West"].map(
-              (direction) => (
-                <Button
-                  key={direction}
-                  variant="outline"
-                  className={`h-[46px] text-base font-normal ${
-                    facing === direction
-                      ? "bg-[#F5F5F5] border-[#7B00FF] text-[#7B00FF]"
-                      : "border-[#E1E1E1] text-[#6C696A]"
-                  }`}
-                  onClick={() => setFacing(direction)}
-                >
-                  {direction}
-                </Button>
-              ),
-            )}
+            {[
+              "North",
+              "South",
+              "East",
+              "West",
+              "North-East",
+              "North-West",
+              "South-East",
+              "South-West",
+            ].map((direction) => (
+              <Button
+                key={direction}
+                variant="outline"
+                className={`h-[46px] text-base font-normal ${
+                  facing === direction
+                    ? "bg-[#F5F5F5] border-[#7B00FF] text-[#7B00FF]"
+                    : "border-[#E1E1E1] text-[#6C696A]"
+                }`}
+                onClick={() => setFacing(direction)}
+              >
+                {direction}
+              </Button>
+            ))}
           </div>
         </div>
 
@@ -108,26 +135,30 @@ export default function AmenitiesDetails() {
         <div className="space-y-2">
           <p className="text-base font-medium text-[#0F0D0D]">Water Source</p>
           <div className="flex flex-wrap gap-2">
-            {["Municipal corporation", "Borewell/Tank", "24*7 Water"].map((source) => (
-              <Button
-                key={source}
-                variant="outline"
-                className={`h-[46px] text-base font-normal ${
-                  waterSource === source
-                    ? "bg-[#F5F5F5] border-[#7B00FF] text-[#7B00FF]"
-                    : "border-[#E1E1E1] text-[#6C696A]"
-                }`}
-                onClick={() => setWaterSource(source)}
-              >
-                {source}
-              </Button>
-            ))}
+            {["Municipal corporation", "Borewell/Tank", "24*7 Water"].map(
+              (source) => (
+                <Button
+                  key={source}
+                  variant="outline"
+                  className={`h-[46px] text-base font-normal ${
+                    waterSource === source
+                      ? "bg-[#F5F5F5] border-[#7B00FF] text-[#7B00FF]"
+                      : "border-[#E1E1E1] text-[#6C696A]"
+                  }`}
+                  onClick={() => setWaterSource(source)}
+                >
+                  {source}
+                </Button>
+              )
+            )}
           </div>
         </div>
 
         {/* Society/Building Features */}
         <div className="space-y-2">
-          <p className="text-base font-medium text-[#0F0D0D]">Society/Building feature</p>
+          <p className="text-base font-medium text-[#0F0D0D]">
+            Society/Building feature
+          </p>
           <div className="flex flex-wrap gap-2">
             {[
               "Swimming Pool",
@@ -180,7 +211,9 @@ export default function AmenitiesDetails() {
                     ? "bg-[#F5F5F5] border-[#7B00FF] text-[#7B00FF]"
                     : "border-[#E1E1E1] text-[#6C696A]"
                 }`}
-                onClick={() => toggleSelection(otherFeatures, setOtherFeatures, feature)}
+                onClick={() =>
+                  toggleSelection(otherFeatures, setOtherFeatures, feature)
+                }
               >
                 {feature}
               </Button>
@@ -194,7 +227,10 @@ export default function AmenitiesDetails() {
             <p className="font-medium">Type of flooring</p>
             <Select>
               <SelectTrigger className="h-[58px] text-base font-normal text-[#6C696A] border-[#E1E1E1]">
-                <SelectValue placeholder="Select Flooring" className="text-[#9E9E9E]" />
+                <SelectValue
+                  placeholder="Select Flooring"
+                  className="text-[#9E9E9E]"
+                />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="marble">Marble</SelectItem>
@@ -227,7 +263,9 @@ export default function AmenitiesDetails() {
 
         {/* Location Advantages */}
         <div className="space-y-2">
-          <p className="text-base font-medium text-[#0F0D0D]">Location Advantages</p>
+          <p className="text-base font-medium text-[#0F0D0D]">
+            Location Advantages
+          </p>
           <div className="flex flex-wrap gap-2">
             {[
               "Close to School",
@@ -248,7 +286,13 @@ export default function AmenitiesDetails() {
                     ? "bg-[#F5F5F5] border-[#7B00FF] text-[#7B00FF]"
                     : "border-[#E1E1E1] text-[#6C696A]"
                 }`}
-                onClick={() => toggleSelection(locationAdvantages, setLocationAdvantages, advantage)}
+                onClick={() =>
+                  toggleSelection(
+                    locationAdvantages,
+                    setLocationAdvantages,
+                    advantage
+                  )
+                }
               >
                 {advantage}
               </Button>
@@ -257,6 +301,5 @@ export default function AmenitiesDetails() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
-
