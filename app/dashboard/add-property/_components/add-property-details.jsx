@@ -40,6 +40,12 @@ import Office from "./_addPropertyComponents/office";
 import Shop from "./_addPropertyComponents/shop";
 import { OfficeSchema } from "../_SchemaValidation/officeSchema";
 import { ShopSchema } from "../_SchemaValidation/shopSchema";
+import Warehouse from "./_addPropertyComponents/warehouse";
+import { warehouseSchema } from "../_SchemaValidation/warehouseSchema";
+import EventSpace from "./_addPropertyComponents/eventSpace";
+import eventSpaceSchema from "../_SchemaValidation/eventSpaceSchema";
+import SharedWarehouseForm from "./_addPropertyComponents/sharedWarehouse";
+import { sharedWarehouseSchema } from "../_SchemaValidation/sharedWarehouseSchema";
 
 export const PropertyDetailsForm = ({
   propertyData,
@@ -65,6 +71,12 @@ export const PropertyDetailsForm = ({
       ? BasePropertySchema.merge(OfficeSchema)
       : propertyKind === "Shop"
       ? BasePropertySchema.merge(ShopSchema)
+      : propertyKind === "Warehouse"
+      ? BasePropertySchema.merge(warehouseSchema)
+      : propertyKind === "EventSpace"
+      ? BasePropertySchema.merge(eventSpaceSchema)
+      : propertyKind === "Shared Warehouse"
+      ? BasePropertySchema.merge(sharedWarehouseSchema)
       : BasePropertySchema;
 
   const form = useForm({
@@ -259,12 +271,98 @@ export const PropertyDetailsForm = ({
           ageOfProperty: 0,
           description: "",
         };
+      } else if (propertyKind === "Warehouse") {
+        return {
+          propertyType: propertyType,
+          category: propertyKind,
+          location: {
+            city: "",
+            state: "",
+            locality: "",
+            subLocality: "",
+            apartment: "",
+            houseNumber: "",
+          },
+          subCategory: "Warehouse/Storage",
+          transactionType: "",
+          propertyDetails: {
+            propertyName: "",
+            warehouseType: "",
+            builtUpArea: {
+              size: 0,
+              unit: "sq ft",
+            },
+            carpetArea: {
+              size: 0,
+              unit: "sq ft",
+            },
+            furnishedStatus: "",
+            floorDetails: {
+              totalFloors: 0,
+              propertyOnFloor: 0,
+            },
+            floorLoadCapacity: {
+              value: 0,
+              unit: "kg/sq ft",
+            },
+            clearHeight: {
+              value: 0,
+              unit: "ft",
+            },
+            dockDoors: 0,
+            rampAccess: false,
+          },
+        };
+      } else if (propertyKind === "EventSpace") {
+        return {
+          propertyType: propertyType,
+          category: propertyKind,
+          location: {
+            city: "",
+            state: "",
+            locality: "",
+            subLocality: "",
+            apartment: "",
+            houseNumber: "",
+          },
+          subCategory: "Event Space",
+          type: "Event Space",
+          propertyDetails: {
+            totalGuests: 0,
+            seatingArrangement: {
+              theaterStyle: 0,
+              classroomStyle: 0,
+              banquetStyle: 0,
+              conferenceStyle: 0,
+            },
+          },
+        };
+      } else if (propertyKind === "Shared Warehouse") {
+        return {
+          propertyType: propertyType,
+          category: propertyKind,
+          location: {
+            city: "",
+            state: "",
+            locality: "",
+            subLocality: "",
+            apartment: "",
+            houseNumber: "",
+          },
+          subCategory: "Shared Workspace",
+          propertyDetails: {
+            workspaceName: "",
+            type: "",
+            capacity: {
+              totalSeats: 0,
+              availableSeats: 0,
+            },
+          },
+        };
       }
-
       return {};
     })(),
   });
-
   function onSubmit(values) {
     console.log(values);
     setIsSubmitting(true);
@@ -504,6 +602,12 @@ export const PropertyDetailsForm = ({
               <Office form={form} />
             ) : propertyKind == "Shop" ? (
               <Shop form={form} />
+            ) : propertyKind == "Warehouse" ? (
+              <Warehouse form={form} />
+            ) : propertyKind == "EventSpace" ? (
+              <EventSpace form={form} />
+            ) : propertyKind == "Shared Warehouse" ? (
+              <SharedWarehouseForm form={form} />
             ) : (
               ""
             )}
