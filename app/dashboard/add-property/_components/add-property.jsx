@@ -49,6 +49,7 @@ export function AddPropertyForm() {
 
   const handleSubmit = async () => {
     const formData = new FormData();
+    console.log(propertyData);
 
     formData.append("propertyData", JSON.stringify(propertyData));
     if (files.images.length > 0) {
@@ -65,18 +66,17 @@ export function AddPropertyForm() {
 
     const token = localStorage.getItem("accessToken").replace(/^"|"$/g, "");
     try {
-      const response = await axios.post(
-        `${BACKEND_URL}/properties/add`,
-        formData,
-        {
-          headers: {
-            Authorization: token,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      console.log("Response:", response.data);
+      // const response = await axios.post(
+      //   `${BACKEND_URL}/properties/add`,
+      //   formData,
+      //   {
+      //     headers: {
+      //       Authorization: token,
+      //       "Content-Type": "multipart/form-data",
+      //     },
+      //   }
+      // );
+      // console.log("Response:", response.data);
     } catch (error) {
       console.error("Error:", error.response?.data || error.message);
     }
@@ -87,7 +87,7 @@ export function AddPropertyForm() {
       <StepsSection steps={steps} currentStep={currentStep} />
       <div className="flex-1 space-y-8">
         <div>
-          {currentStep === 1 && (
+          {currentStep === 4 && (
             <BasicInformation
               lookingFor={lookingFor}
               setLookingFor={setLookingFor}
@@ -115,8 +115,12 @@ export function AddPropertyForm() {
               />
             </div>
           )}
-          {currentStep === 4 && (
-            <AmenitiesDetails propertyData={propertyData} />
+          {currentStep === 1 && (
+            <AmenitiesDetails
+              propertyData={propertyData}
+              setCurrentStep={setCurrentStep}
+              setPropertyData={setPropertyData}
+            />
           )}
 
           {currentStep === 5 && <AddPrice />}
