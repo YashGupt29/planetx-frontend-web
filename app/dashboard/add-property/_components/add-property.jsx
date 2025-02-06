@@ -87,7 +87,7 @@ export function AddPropertyForm() {
       <StepsSection steps={steps} currentStep={currentStep} />
       <div className="flex-1 space-y-8">
         <div>
-          {currentStep === 4 && (
+          {currentStep === 1 && (
             <BasicInformation
               lookingFor={lookingFor}
               setLookingFor={setLookingFor}

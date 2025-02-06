@@ -14,6 +14,13 @@ import { pgFormSchema } from "../_amentiesComponents/_schema/pgFormSchema";
 import PGAmenities from "../_amentiesComponents/pgAmmenties";
 import HotelAmentiesForm from "../_amentiesComponents/hotelAmenties";
 import { hotelFormSchema } from "../_amentiesComponents/_schema/hotelFormSchema";
+import { hotelDefaults } from "../_amentiesComponents/default/hotelDefaullt";
+import OfficeAmenities from "../_amentiesComponents/officeAmenties";
+import officeDefault from "../_amentiesComponents/default/officeDefault";
+import { officeAmmentiesSchema } from "../_amentiesComponents/_schema/officeFormSchema";
+import ShopForm from "../_amentiesComponents/shopAmenties";
+import { shopFormAmmentiesScehma } from "../_amentiesComponents/_schema/shopFormSchema";
+import { shopDefault } from "../_amentiesComponents/default/shopDefault";
 
 export default function AmenitiesDetails({
   propertyData,
@@ -30,108 +37,22 @@ export default function AmenitiesDetails({
       ? pgFormSchema
       : propertyKind === "Hotel"
       ? hotelFormSchema
+      : propertyKind === "Office"
+      ? officeAmmentiesSchema
+      : propertyKind === "Shop"
+      ? shopFormAmmentiesScehma
       : "";
-  const hotelDefaults = {
-    amenities: {
-      wifi: false,
-      powerBackup: false,
-      parking: {
-        twoWheeler: false,
-        fourWheeler: false,
-      },
-      hotWater: false,
-      laundryService: false,
-      housekeeping: false,
-      roomService: false,
-      airConditioning: false,
-      restaurant: false,
-      bar: false,
-      conferenceRoom: false,
-      gym: false,
-      swimmingPool: false,
-      lift: false,
-      cctv: false,
-      security24x7: false,
-      firstAidKit: false,
-      fireExtinguisher: false,
-      wheelChairAccess: false,
-    },
-    mealOptions: {
-      includedMeals: {
-        breakfast: false,
-        lunch: false,
-        dinner: false,
-      },
-      // Note: the schema requires at least one cuisine; using "Indian" as default.
-      availableCuisines: "",
-      specialDietaryMeals: {
-        vegetarian: false,
-        vegan: false,
-        glutenFree: false,
-        halal: false,
-        kosher: false,
-      },
-      mealCharges: {
-        breakfast: 0,
-        lunch: 0,
-        dinner: 0,
-      },
-      diningOptions: {
-        inRoomDining: false,
-        buffet: false,
-        aLaCarte: false,
-        commonDiningArea: false,
-      },
-    },
-    dormitorySpecificDetails: {
-      totalBeds: 0,
-      bunkBedAvailability: false,
-      lockerFacility: false,
-      commonRoom: false,
-      kitchenAccess: false,
-      diningArea: false,
-    },
-    nearbyPlaces: {
-      hospital: false,
-      school: false,
-      metro: false,
-      mall: false,
-      market: false,
-      railway: false,
-      airport: false,
-      highway: false,
-      busStation: false,
-    },
-    rules: {
-      checkInTime: "",
-      checkOutTime: "",
-      smokingAllowed: false,
-      alcoholAllowed: false,
-      petsAllowed: false,
-      quietHours: "",
-      visitorPolicy: "",
-      cancellationPolicy: "",
-    },
-    bookingOptions: {
-      onlineBooking: false,
-      walkIn: false,
-      preBookingRequired: false,
-      groupDiscounts: false,
-      longStayDiscounts: false,
-    },
-    additionalFeatures: {
-      childFriendly: false,
-      coupleFriendly: false,
-      seniorCitizenFriendly: false,
-      localIDAccepted: false,
-      pickupDropService: false,
-      tourGuidance: false,
-    },
-  };
 
   const form = useForm({
     resolver: zodResolver(schema),
-    defaultValues: propertyKind === "Hotel" ? hotelDefaults : "",
+    defaultValues:
+      propertyKind === "Hotel"
+        ? hotelDefaults
+        : propertyKind === "Office"
+        ? officeDefault
+        : propertyKind === "Shop"
+        ? shopDefault
+        : "",
   });
   function onSubmit(values) {
     try {
@@ -170,6 +91,10 @@ export default function AmenitiesDetails({
             <PGAmenities form={form} />
           ) : propertyKind === "Hotel" ? (
             <HotelAmentiesForm form={form} />
+          ) : propertyKind === "Office" ? (
+            <OfficeAmenities form={form} />
+          ) : propertyKind === "Shop" ? (
+            <ShopForm form={form} />
           ) : (
             ""
           )}
