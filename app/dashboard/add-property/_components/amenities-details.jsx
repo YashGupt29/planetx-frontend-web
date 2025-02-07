@@ -21,6 +21,16 @@ import { officeAmmentiesSchema } from "../_amentiesComponents/_schema/officeForm
 import ShopForm from "../_amentiesComponents/shopAmenties";
 import { shopFormAmmentiesScehma } from "../_amentiesComponents/_schema/shopFormSchema";
 import { shopDefault } from "../_amentiesComponents/default/shopDefault";
+import Warehouse from "../_amentiesComponents/warehouseAmenties";
+import { WarehouseSchema } from "../_amentiesComponents/_schema/warehouseScehma";
+import { warehouseDefault } from "../_amentiesComponents/default/warehouseDefault";
+import SharedWarehouseForm from "./_addPropertyComponents/sharedWarehouse";
+import ShareWarehouseAmenties from "../_amentiesComponents/sharedWarehouseAmenties";
+import { sharedWarehouseDefault } from "../_amentiesComponents/default/sharedWarehouseDefault";
+import { sharedWorkspaceAmentiesSchema } from "../_amentiesComponents/_schema/sharedWarehouseSchema";
+import EventSpaceAmentiesForm from "../_amentiesComponents/eventSpaceAmenties";
+import { eventSpaceSchema } from "../_amentiesComponents/_schema/eventSpaceAmenties";
+import { eventSpaceDefaultValues } from "../_amentiesComponents/default/eventSpace";
 
 export default function AmenitiesDetails({
   propertyData,
@@ -41,6 +51,12 @@ export default function AmenitiesDetails({
       ? officeAmmentiesSchema
       : propertyKind === "Shop"
       ? shopFormAmmentiesScehma
+      : propertyKind === "Warehouse"
+      ? WarehouseSchema
+      : propertyKind === "Shared Warehouse"
+      ? sharedWorkspaceAmentiesSchema
+      : propertyKind === "EventSpace"
+      ? eventSpaceSchema
       : "";
 
   const form = useForm({
@@ -52,11 +68,16 @@ export default function AmenitiesDetails({
         ? officeDefault
         : propertyKind === "Shop"
         ? shopDefault
+        : propertyKind === "Warehouse"
+        ? warehouseDefault
+        : propertyKind === "Shared Warehouse"
+        ? sharedWarehouseDefault
+        : propertyKind === "EventSpace"
+        ? eventSpaceDefaultValues
         : "",
   });
   function onSubmit(values) {
     try {
-      console.log(values);
       setPropertyData((prevPropertyData) => ({
         ...prevPropertyData,
         ...values,
@@ -95,6 +116,12 @@ export default function AmenitiesDetails({
             <OfficeAmenities form={form} />
           ) : propertyKind === "Shop" ? (
             <ShopForm form={form} />
+          ) : propertyKind === "Warehouse" ? (
+            <Warehouse form={form} />
+          ) : propertyKind === "Shared Warehouse" ? (
+            <ShareWarehouseAmenties form={form} />
+          ) : propertyKind === "EventSpace" ? (
+            <EventSpaceAmentiesForm form={form} />
           ) : (
             ""
           )}

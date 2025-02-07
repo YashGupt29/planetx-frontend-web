@@ -87,7 +87,7 @@ export function AddPropertyForm() {
       <StepsSection steps={steps} currentStep={currentStep} />
       <div className="flex-1 space-y-8">
         <div>
-          {currentStep === 1 && (
+          {currentStep === 4 && (
             <BasicInformation
               lookingFor={lookingFor}
               setLookingFor={setLookingFor}
@@ -115,7 +115,7 @@ export function AddPropertyForm() {
               />
             </div>
           )}
-          {currentStep === 1 && (
+          {currentStep === 4 && (
             <AmenitiesDetails
               propertyData={propertyData}
               setCurrentStep={setCurrentStep}
@@ -123,7 +123,7 @@ export function AddPropertyForm() {
             />
           )}
 
-          {currentStep === 5 && <AddPrice />}
+          {currentStep === 1 && <AddPrice />}
         </div>
 
         <div className="flex items-center justify-between">
