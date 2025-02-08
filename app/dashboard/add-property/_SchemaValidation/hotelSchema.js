@@ -37,11 +37,23 @@ export const HotelSchema = z.object({
     roomSize: z.string().min(1, "Room size is required"),
     beds: z.number().int().min(1, "Number of beds must be at least 1"),
     bathroomType: z.string().min(1, "Bathroom type is required"),
-    airConditioning: z.boolean(),
-    balcony: z.boolean(),
-    smokingAllowed: z.boolean(),
+    airConditioning: z.preprocess(
+      (val) => val == "true" || val == true,
+      z.boolean({ required_error: "Please provide details" })
+    ),
+    balcony: z.preprocess(
+      (val) => val == "true" || val == true,
+      z.boolean({ required_error: "Please provide details" })
+    ),
+    smokingAllowed: z.preprocess(
+      (val) => val == "true" || val == true,
+      z.boolean({ required_error: "Please provide details" })
+    ),
     occupancy: z.string().min(1, "Occupancy is required"),
     pricePerNight: z.number().min(1, "Price per night must be greater than 0"),
-    availability: z.boolean(),
+    availability: z.preprocess(
+      (val) => val == "true" || val == true,
+      z.boolean({ required_error: "Please provide availability" })
+    ),
   }),
 });

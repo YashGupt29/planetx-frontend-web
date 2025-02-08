@@ -11,6 +11,9 @@ import AddPrice from "./add-price";
 import axios from "axios";
 import BACKEND_URL from "@/lib/BACKEND_URL";
 import { useRouter, useSearchParams } from "next/navigation";
+import SubmitPropertyDialog from "./dialogSubmitProperty";
+import LoadingScreen from "./loader";
+import { useToast } from "@/hooks/use-toast";
 
 const steps = [
   { number: 1, title: "Basic Information" },
@@ -26,6 +29,7 @@ export function AddPropertyForm() {
   const [currentStep, setCurrentStep] = React.useState(1);
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [propertyData, setPropertyData] = React.useState({});
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [files, setFiles] = React.useState({ images: [], video: null });
   const [lookingFor, setLookingFor] = React.useState(
     searchParams.get("lookingFor") || "Buyer"
@@ -36,6 +40,7 @@ export function AddPropertyForm() {
   const [propertyType, setPropertyType] = React.useState(
     searchParams.get("propertyType") || "For Sale"
   );
+  const { toast } = useToast();
 
   React.useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
@@ -48,21 +53,18 @@ export function AddPropertyForm() {
   }, [lookingFor, propertyKind, propertyType]);
 
   const handleSubmit = async () => {
+    setIsSubmitting(true);
     const formData = new FormData();
-    console.log(propertyData);
-
+    propertyData.role = lookingFor;
     formData.append("propertyData", JSON.stringify(propertyData));
     if (files.images.length > 0) {
       files.images.forEach((image) => {
         formData.append("images", image);
       });
     }
-    console.log(files.video);
     if (files.video && files.video[0]) {
       formData.append("video", files.video[0]);
     }
-
-    console.log("FormData:", [...formData.entries()]);
 
     const token = localStorage.getItem("accessToken").replace(/^"|"$/g, "");
     try {
@@ -76,9 +78,22 @@ export function AddPropertyForm() {
       //     },
       //   }
       // );
-      // console.log("Response:", response.data);
+      toast({
+        title: "Success",
+        description: "Property added successfully!",
+        variant: "default",
+      });
+      setIsSubmitting(false);
+      setCurrentStep(1);
     } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to add property",
+        variant: "destructive",
+      });
       console.error("Error:", error.response?.data || error.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -87,7 +102,8 @@ export function AddPropertyForm() {
       <StepsSection steps={steps} currentStep={currentStep} />
       <div className="flex-1 space-y-8">
         <div>
-          {currentStep === 4 && (
+          {isSubmitting && <LoadingScreen />}
+          {currentStep === 1 && (
             <BasicInformation
               lookingFor={lookingFor}
               setLookingFor={setLookingFor}
@@ -123,36 +139,47 @@ export function AddPropertyForm() {
             />
           )}
 
-          {currentStep === 1 && <AddPrice />}
+          {currentStep === 5 && (
+            <AddPrice
+              propertyData={propertyData}
+              setPropertyData={setPropertyData}
+              setCurrentStep={setCurrentStep}
+            />
+          )}
+          {}
         </div>
 
         <div className="flex items-center justify-between">
           <div className="text-sm font-medium text-muted-foreground">
             {currentStep} of {steps.length} steps
           </div>
-          {currentStep === 5 ? (
-            <Button
-              onClick={() => handleSubmit()}
-              className="bg-[#7B00FF] text-primary-foreground"
-            >
-              Submit Property
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="ml-2 h-4 w-4"
-              >
-                <path d="M5 12h14" />
-                <path d="m12 5 7 7-7 7" />
-              </svg>
-            </Button>
+          {currentStep === 6 ? (
+            <SubmitPropertyDialog
+              handleSubmit={handleSubmit}
+              currentStep={currentStep}
+            />
           ) : (
+            // <Button
+            //   onClick={() => handleSubmit()}
+            //   className="bg-[#7B00FF] text-primary-foreground"
+            // >
+            //   Submit Property
+            //   <svg
+            //     xmlns="http://www.w3.org/2000/svg"
+            //     width="24"
+            //     height="24"
+            //     viewBox="0 0 24 24"
+            //     fill="none"
+            //     stroke="currentColor"
+            //     strokeWidth="2"
+            //     strokeLinecap="round"
+            //     strokeLinejoin="round"
+            //     className="ml-2 h-4 w-4"
+            //   >
+            //     <path d="M5 12h14" />
+            //     <path d="m12 5 7 7-7 7" />
+            //   </svg>
+            // </Button>
             <Button
               onClick={(event) => {
                 setCurrentStep((prev) => Math.min(prev + 1, 5));
