@@ -11,11 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+
 import {
   Heart,
   Search,
@@ -24,103 +20,24 @@ import {
   Phone,
   MessageCircle,
 } from "lucide-react";
-import { useState } from "react";
-import { ReusableCollapsible } from "./_component/collapisble";
-import BudgetFilter from "./_component/BudgetFilter";
+import SideBarListingview from "./_component/sideBar";
+import { SortFilter } from "./_component/sortFilter";
 
 export default function ListingView() {
-  const [selectedType, setSelectedType] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedBedroom, setSelectedBedroom] = useState(null);
-  const [selectedRole, setSelectedRole] = useState(null);
-  const [parking, setParking] = useState(null);
-  const [furnished, setFurnished] = useState(null);
-
   return (
     <div className="flex min-h-screen bg-[#f8f4fc] p-10 gap-3">
       {/* Left Sidebar */}
-      <div className="w-[300px] border-r p-4 space-y-6 bg-white rounded-xl">
-        {/* Budget Section */}
-        <BudgetFilter />
-        {/* Property Type Section */}
-        <ReusableCollapsible
-          title="Property Type"
-          options={["For Sale", "For Rent", "Commercial"]}
-          selected={selectedType}
-          setSelected={setSelectedType}
-          paramName="propertyType"
-        />{" "}
-        <ReusableCollapsible
-          title="Category"
-          options={[
-            "Residential",
-            "Pg",
-            "Hotel",
-            "Office",
-            "Shop",
-            "Warehouse",
-            "Shared Warehouse",
-            "EventSpace",
-          ]}
-          selected={selectedCategory}
-          setSelected={setSelectedCategory}
-          paramName="category"
-        />
-        <ReusableCollapsible
-          title="Number of Bedrooms"
-          options={["1", "2", "3", "4", "5", "6+"]}
-          selected={selectedBedroom}
-          setSelected={setSelectedBedroom}
-          paramName="bedrooms"
-        />
-        <ReusableCollapsible
-          title="Posted By"
-          options={[
-            "Buyer",
-            "Renter",
-            "Landlord",
-            "Property Owner",
-            "Rental Provider",
-            "Builder",
-            "Dealer",
-          ]}
-          selected={selectedRole}
-          setSelected={setSelectedRole}
-          paramName="postedBy"
-        />
-        <ReusableCollapsible
-          title="Parking"
-          options={["Open Parking", "Closed Parking"]}
-          selected={parking}
-          setSelected={setParking}
-          paramName="parking"
-        />
-        <ReusableCollapsible
-          title="Furnishing status"
-          options={["Furnished", "Semi furnished", "Unfurnished"]}
-          selected={furnished}
-          setSelected={setFurnished}
-          paramName="furnishing"
-        />
-      </div>
+      <SideBarListingview />
 
       {/* Main Content */}
       <div className="flex-1 p-4  rounded-xl">
         {/* Search Header */}
-        <div className="flex gap-4 mb-6">
-          <Select defaultValue="buy">
-            <SelectTrigger className="w-[100px]">
-              <SelectValue placeholder="Buy" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="buy">Buy</SelectItem>
-              <SelectItem value="rent">Rent</SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="flex flex-col gap-4 mb-6">
           <div className="relative flex-1 ">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
             <Input className="pl-10 bg-white" placeholder="Search area, city" />
           </div>
+          <SortFilter />
         </div>
 
         {/* Property Cards */}
