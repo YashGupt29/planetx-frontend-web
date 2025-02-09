@@ -13,7 +13,6 @@ export default function Home() {
   return (
     <div>
       <Header />
-      <Navbar />
       <LandingPage />
       <ExploreProperty />
       <PropertyGuide />
@@ -22,6 +21,6 @@ export default function Home() {
       <AppDownloadSection />
       <Testimonials />
       <Footer />
-    </div >
+    </div>
   );
 }
