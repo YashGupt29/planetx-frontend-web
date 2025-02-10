@@ -68,16 +68,16 @@ export function AddPropertyForm() {
 
     const token = localStorage.getItem("accessToken").replace(/^"|"$/g, "");
     try {
-      // const response = await axios.post(
-      //   `${BACKEND_URL}/properties/add`,
-      //   formData,
-      //   {
-      //     headers: {
-      //       Authorization: token,
-      //       "Content-Type": "multipart/form-data",
-      //     },
-      //   }
-      // );
+      const response = await axios.post(
+        `${BACKEND_URL}/properties/add`,
+        formData,
+        {
+          headers: {
+            Authorization: token,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       toast({
         title: "Success",
         description: "Property added successfully!",
